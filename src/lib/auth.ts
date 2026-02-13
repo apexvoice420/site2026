@@ -1,41 +1,36 @@
-import { auth, currentUser } from "@clerk/nextjs/server";
 import db from "@/lib/db";
-import { redirect } from "next/navigation";
 
+// Stub auth for local/offline mode - no Clerk required
 export async function getCurrentUser() {
-    const user = await currentUser();
-    if (!user) return null;
-
-    const dbUser = await db.user.findUnique({
-        where: { clerkId: user.id },
+    // Return a default user for offline mode
+    const user = await db.user.findFirst({
         include: { tenant: true }
     });
-
-    return dbUser;
+    return user;
 }
 
 export async function requireUser() {
     const user = await getCurrentUser();
-
     if (!user) {
-        console.log(" Auth: User not found in DB.");
-        // Check if user exists in Clerk but not DB (needs onboarding)
-        const clerkAuth = await auth();
-        if (clerkAuth.userId) {
-            console.log(` Auth: Clerk session exists (${clerkAuth.userId}). Redirecting to onboarding.`);
-            redirect("/dashboard/onboarding");
-        }
-        console.log(" Auth: No session. Redirecting to sign-in.");
-        redirect("/sign-in");
+        // Create a default user if none exists
+        const tenant = await db.tenant.findFirst() || await db.tenant.create({
+            data: { name: "Default Tenant", industry: "Voice AI" }
+        });
+        return await db.user.create({
+            data: {
+                email: "admin@apexvoicesolutions.org",
+                name: "Admin",
+                clerkId: "local-user",
+                tenantId: tenant.id,
+                role: 'OWNER'
+            },
+            include: { tenant: true }
+        });
     }
-    console.log(` Auth: User verified: ${user.email} (Tenant: ${user.tenantId})`);
     return user;
 }
 
 export async function requireTenant() {
     const user = await requireUser();
-    if (!user.tenant) {
-        redirect("/dashboard/onboarding");
-    }
     return user.tenant;
 }

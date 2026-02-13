@@ -1,13 +1,9 @@
 "use server";
 
 import db from "@/lib/db";
-import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
 export async function createFromOnboarding(formData: FormData) {
-    const user = await currentUser();
-    if (!user) throw new Error("Unauthorized");
-
     const companyName = formData.get("companyName") as string;
     const industry = formData.get("industry") as string;
 
@@ -21,18 +17,16 @@ export async function createFromOnboarding(formData: FormData) {
         }
     });
 
-    // 2. Create User linked to Clerk Logic
-    console.log(` Onboarding: Creating user for ${user.id} in tenant ${tenant.id}`);
+    // 2. Create User for local mode
     await db.user.create({
         data: {
-            email: user.emailAddresses[0].emailAddress,
-            name: `${user.firstName} ${user.lastName}`,
-            clerkId: user.id,
+            email: "admin@apexvoicesolutions.org",
+            name: "Admin User",
+            clerkId: "local-user-" + Date.now(),
             tenantId: tenant.id,
             role: 'OWNER'
         }
     });
 
-    console.log(" Onboarding: Success. Redirecting to dashboard.");
     redirect("/dashboard");
 }
