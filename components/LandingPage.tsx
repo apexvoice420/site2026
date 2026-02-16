@@ -41,22 +41,26 @@ const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) =
               </div>
               <div className="space-y-6">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gray-600 overflow-hidden">
-                    <img src="https://picsum.photos/100/100?random=1" alt="Avatar" />
+                  <div className="w-12 h-12 rounded-full bg-gray-600 overflow-hidden relative">
+                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="Avatar" className="object-cover w-full h-full" />
                   </div>
                   <div>
-                    <div className="h-4 w-32 bg-gray-600 rounded-full mb-2"></div>
-                    <div className="h-3 w-24 bg-gray-700 rounded-full"></div>
+                    <div className="text-white font-bold text-sm">Mike T. (Homeowner)</div>
+                    <div className="text-gray-400 text-xs">2 mins ago</div>
                   </div>
                 </div>
-                <div className="space-y-3">
-                  <div className="h-3 w-full bg-gray-700 rounded-full"></div>
-                  <div className="h-3 w-5/6 bg-gray-700 rounded-full"></div>
-                  <div className="h-3 w-4/6 bg-gray-700 rounded-full"></div>
+                <div className="bg-white/5 p-4 rounded-xl border border-white/5">
+                  <p className="text-gray-300 text-sm leading-relaxed">
+                    "I need a quote for a roof repair. I have a leak in the living room. Can you come out tomorrow?"
+                  </p>
                 </div>
-                <div className="pt-4 border-t border-white/5 flex justify-between">
-                  <div className="h-8 w-24 bg-[#1479FF]/20 rounded-lg flex items-center justify-center text-[10px] text-[#1479FF] font-bold">BOOKED</div>
-                  <div className="h-8 w-24 bg-white/5 rounded-lg"></div>
+                <div className="pt-4 border-t border-white/5 flex justify-between items-center">
+                  <div className="bg-[#1479FF]/20 px-3 py-1 rounded-lg text-xs text-[#1479FF] font-bold border border-[#1479FF]/30">
+                    APPOINTMENT BOOKED
+                  </div>
+                  <div className="text-gray-500 text-xs font-mono">
+                    Tue, Oct 24 • 9:00 AM
+                  </div>
                 </div>
               </div>
             </div>
