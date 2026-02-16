@@ -29,7 +29,10 @@ const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) =
               >
                 Launch Free Demo <ChevronRight size={20} />
               </button>
-              <button className="border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all">
+              <button
+                onClick={() => setView(AppView.PRICING)}
+                className="border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all"
+              >
                 View Pricing
               </button>
             </div>
@@ -139,7 +142,10 @@ const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) =
                     </div>
                   ))}
                 </div>
-                <button className={`w-full py-4 rounded-xl font-bold transition-all ${plan.popular ? 'bg-[#1479FF] text-white hover:bg-blue-600' : 'bg-gray-100 text-[#1E2A38] hover:bg-gray-200'}`}>
+                <button
+                  onClick={() => setView(AppView.SETUP)}
+                  className={`w-full py-4 rounded-xl font-bold transition-all ${plan.popular ? 'bg-[#1479FF] text-white hover:bg-blue-600' : 'bg-gray-100 text-[#1E2A38] hover:bg-gray-200'}`}
+                >
                   Choose {plan.name}
                 </button>
               </div>

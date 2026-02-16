@@ -35,21 +35,21 @@ export const FEATURES = [
 export const PRICING_PLANS = [
   {
     name: "Starter",
-    price: "$149",
+    price: "$199",
     minutes: "500",
-    features: ["Basic script", "Message taking", "Call summaries", "1 Number"]
+    features: ["24/7 AI Receptionist", "Basic Appointment Booking", "SMS Call Summaries", "1 Dedicated Phone Number"]
   },
   {
-    name: "Pro",
-    price: "$349",
-    minutes: "2,000",
+    name: "Business",
+    price: "$499",
+    minutes: "2,500",
     popular: true,
-    features: ["Appointment booking", "Lead qualifying", "Emergency escalation", "Custom voice"]
+    features: ["Advanced Logic & Qualifying", "Full CRM Integration", "Emergency Escalation", "Custom Brand Voice"]
   },
   {
-    name: "Elite",
-    price: "$599",
+    name: "Enterprise",
+    price: "$999",
     minutes: "Unlimited",
-    features: ["Full virtual replacement", "Outbound follow-ups", "CRM integration", "Priority support"]
+    features: ["Multi-agent Workflows", "Outbound Follow-ups", "Priority 24/7 Support", "Dedicated Account Manager"]
   }
 ];

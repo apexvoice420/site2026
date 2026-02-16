@@ -2,8 +2,9 @@
 import React from 'react';
 import { PRICING_PLANS } from '../constants';
 import { ChevronRight } from 'lucide-react';
+import { AppView } from '../types';
 
-const Pricing: React.FC = () => {
+const Pricing: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) => {
     return (
         <div className="bg-white min-h-screen pt-24 pb-32">
             <div className="max-w-6xl mx-auto px-6">
@@ -35,7 +36,10 @@ const Pricing: React.FC = () => {
                                     </div>
                                 ))}
                             </div>
-                            <button className={`w-full py-4 rounded-xl font-bold transition-all ${plan.popular ? 'bg-[#1479FF] text-white hover:bg-blue-600' : 'bg-gray-100 text-[#1E2A38] hover:bg-gray-200'}`}>
+                            <button
+                                onClick={() => setView(AppView.SETUP)}
+                                className={`w-full py-4 rounded-xl font-bold transition-all ${plan.popular ? 'bg-[#1479FF] text-white hover:bg-blue-600' : 'bg-gray-100 text-[#1E2A38] hover:bg-gray-200'}`}
+                            >
                                 Choose {plan.name}
                             </button>
                         </div>

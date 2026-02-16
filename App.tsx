@@ -43,7 +43,7 @@ const App: React.FC = () => {
       case AppView.DEMO:
         return <DemoSandbox />;
       case AppView.PRICING:
-        return <Pricing />;
+        return <Pricing setView={setView} />;
       case AppView.LOGIN:
         return <Login />;
       case AppView.DASHBOARD:
