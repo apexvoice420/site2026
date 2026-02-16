@@ -29,6 +29,14 @@ const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) =
               >
                 Launch Free Demo <ChevronRight size={20} />
               </button>
+              <a
+                href="tel:+13863199076"
+                className="inline-flex flex-col items-center gap-2 px-10 py-5 bg-gradient-to-br from-[#6366f1] to-[#8b5cf6] text-white no-underline rounded-2xl font-bold shadow-xl shadow-indigo-500/30 hover:scale-105 transition-all text-center"
+              >
+                <span className="text-2xl">📞</span>
+                <span className="text-sm">Call for Live Demo</span>
+                <span className="text-[10px] opacity-90">+1 (386) 319-9076</span>
+              </a>
               <button
                 onClick={() => setView(AppView.PRICING)}
                 className="border border-white/20 bg-white/5 backdrop-blur-sm px-8 py-4 rounded-xl font-bold text-lg hover:bg-white/10 transition-all"
