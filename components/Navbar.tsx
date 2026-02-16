@@ -21,13 +21,14 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
     <nav className="sticky top-0 z-50 w-full bg-[#1E2A38] text-white px-6 py-4 shadow-xl">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div
-          className="flex items-center gap-2 cursor-pointer group"
+          className="flex items-center gap-3 cursor-pointer group"
           onClick={() => setView(AppView.LANDING)}
         >
-          <div className="w-10 h-10 bg-[#1479FF] rounded-lg flex items-center justify-center font-bold text-xl group-hover:scale-110 transition-transform">
-            A
-          </div>
-          <span className="font-extrabold text-xl tracking-tight">APEX <span className="text-[#1479FF]">VOICE</span></span>
+          <img
+            src="/assets/logo.png"
+            alt="Apex Voice Solutions"
+            className="h-10 w-auto group-hover:scale-105 transition-transform"
+          />
         </div>
 
         <div className="hidden md:flex items-center gap-8">

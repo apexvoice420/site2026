@@ -1,4 +1,3 @@
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -8,10 +7,108 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Tenant {
+  id          String   @id @default(cuid())
+  name        String
+  industry    String?
+  vapiKey     String?
+  phoneNumber String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  users     User[]
+  agents    Agent[]
+  leads     Lead[]
+  workflows Workflow[]
+  calls     CallLog[]
+}
+
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String   @id @default(cuid())
   email     String   @unique
   password  String
+  name      String?
+  role      String   @default("MEMBER")
+  tenantId  String
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+model Agent {
+  id          String   @id @default(cuid())
+  name        String
+  status      String   @default("DRAFT")
+  vapiAgentId String?
+  config      String?  // JSON string for agent configuration
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  workflows   Workflow[]
+  calls       CallLog[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+model Workflow {
+  id       String   @id @default(cuid())
+  name     String
+  trigger  String
+  nodes    String   // JSON string
+  edges    String   // JSON string
+  isActive Boolean  @default(false)
+  tenantId String
+  tenant   Tenant   @relation(fields: [tenantId], references: [id])
+  agentId  String?
+  agent    Agent?   @relation(fields: [agentId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tenantId])
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  firstName   String?
+  lastName    String?
+  email       String?
+  phone       String?
+  status      String   @default("NEW")
+  tags        String   @default("")
+  customData  String?  // JSON string
+  tenantId    String
+  tenant      Tenant   @relation(fields: [tenantId], references: [id])
+  calls       CallLog[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([tenantId])
+  @@index([phone])
+  @@index([status])
+}
+
+model CallLog {
+  id            String   @id @default(cuid())
+  direction     String   // INBOUND or OUTBOUND
+  status        String   // COMPLETED, MISSED, VOICEMAIL, etc.
+  duration      Int?
+  recordingUrl  String?
+  transcript    String?  @db.Text
+  summary       String?  @db.Text
+  outcome       String?
+  vapiCallId    String?
+  agentId       String?
+  agent         Agent?   @relation(fields: [agentId], references: [id])
+  leadId        String?
+  lead          Lead?    @relation(fields: [leadId], references: [id])
+  tenantId      String
+  tenant        Tenant   @relation(fields: [tenantId], references: [id])
+  createdAt     DateTime @default(now())
+
+  @@index([tenantId])
+  @@index([leadId])
+  @@index([createdAt])
 }

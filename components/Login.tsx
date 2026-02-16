@@ -8,7 +8,7 @@ const Login: React.FC = () => {
         <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="flex justify-center">
-                    <div className="w-12 h-12 bg-[#1479FF] rounded-lg flex items-center justify-center font-bold text-xl text-white uppercase">A</div>
+                    <img src="/assets/logo.png" alt="Apex Voice Solutions" className="h-12 w-auto" />
                 </div>
                 <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
                     Apex Voice CRM
@@ -23,7 +23,7 @@ const Login: React.FC = () => {
                     <p className="text-gray-500 mb-6">
                         Access your dashboard to manage leads, view call transcripts, and track conversions.
                     </p>
-                    
+
                     <a
                         href={CRM_URL}
                         className="w-full inline-flex justify-center items-center gap-2 py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#1479FF] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#1479FF]"

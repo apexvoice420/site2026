@@ -37,7 +37,7 @@ const Pricing: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) => {
                                 ))}
                             </div>
                             <button
-                                onClick={() => setView(AppView.SETUP)}
+                                onClick={() => setView(AppView.LOGIN)}
                                 className={`w-full py-4 rounded-xl font-bold transition-all ${plan.popular ? 'bg-[#1479FF] text-white hover:bg-blue-600' : 'bg-gray-100 text-[#1E2A38] hover:bg-gray-200'}`}
                             >
                                 Choose {plan.name}
