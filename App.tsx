@@ -5,7 +5,8 @@ import Navbar from './components/Navbar';
 import LandingPage from './components/LandingPage';
 import DemoSandbox from './components/DemoSandbox';
 import Dashboard from './components/Dashboard';
-import LeadPack from './components/LeadPack';
+import Dashboard from './components/Dashboard';
+// import LeadPack from './components/LeadPack';
 import Pricing from './components/Pricing';
 import Login from './components/Login';
 
@@ -48,8 +49,8 @@ const App: React.FC = () => {
         return <Login />;
       case AppView.DASHBOARD:
         return <Dashboard />;
-      case AppView.LEAD_PACK:
-        return <LeadPack />;
+      // case AppView.LEAD_PACK:
+      //   return <LeadPack />;
       case AppView.SETUP:
         return <SetupGuide />;
       default:
