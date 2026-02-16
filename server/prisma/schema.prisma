@@ -8,19 +8,18 @@ datasource db {
 }
 
 model Tenant {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
   industry    String?
   vapiKey     String?
   phoneNumber String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  users     User[]
-  agents    Agent[]
-  leads     Lead[]
-  workflows Workflow[]
-  calls     CallLog[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  agents      Agent[]
+  calls       CallLog[]
+  leads       Lead[]
+  users       User[]
+  workflows   Workflow[]
 }
 
 model User {
@@ -30,60 +29,60 @@ model User {
   name      String?
   role      String   @default("MEMBER")
   tenantId  String
-  tenant    Tenant   @relation(fields: [tenantId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
 
   @@index([tenantId])
 }
 
 model Agent {
-  id          String   @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
-  status      String   @default("DRAFT")
+  status      String     @default("DRAFT")
   vapiAgentId String?
-  config      String?  // JSON string for agent configuration
+  config      String?
   tenantId    String
-  tenant      Tenant   @relation(fields: [tenantId], references: [id])
-  workflows   Workflow[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  tenant      Tenant     @relation(fields: [tenantId], references: [id])
   calls       CallLog[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  workflows   Workflow[]
 
   @@index([tenantId])
 }
 
 model Workflow {
-  id       String   @id @default(cuid())
-  name     String
-  trigger  String
-  nodes    String   // JSON string
-  edges    String   // JSON string
-  isActive Boolean  @default(false)
-  tenantId String
-  tenant   Tenant   @relation(fields: [tenantId], references: [id])
-  agentId  String?
-  agent    Agent?   @relation(fields: [agentId], references: [id])
+  id        String   @id @default(cuid())
+  name      String
+  trigger   String
+  nodes     String
+  edges     String
+  isActive  Boolean  @default(false)
+  tenantId  String
+  agentId   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  agent     Agent?   @relation(fields: [agentId], references: [id])
+  tenant    Tenant   @relation(fields: [tenantId], references: [id])
 
   @@index([tenantId])
 }
 
 model Lead {
-  id          String   @id @default(cuid())
-  firstName   String?
-  lastName    String?
-  email       String?
-  phone       String?
-  status      String   @default("NEW")
-  tags        String   @default("")
-  customData  String?  // JSON string
-  tenantId    String
-  tenant      Tenant   @relation(fields: [tenantId], references: [id])
-  calls       CallLog[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String    @id @default(cuid())
+  firstName  String?
+  lastName   String?
+  email      String?
+  phone      String?
+  status     String    @default("NEW")
+  tags       String    @default("")
+  customData String?
+  tenantId   String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  calls      CallLog[]
+  tenant     Tenant    @relation(fields: [tenantId], references: [id])
 
   @@index([tenantId])
   @@index([phone])
@@ -91,22 +90,22 @@ model Lead {
 }
 
 model CallLog {
-  id            String   @id @default(cuid())
-  direction     String   // INBOUND or OUTBOUND
-  status        String   // COMPLETED, MISSED, VOICEMAIL, etc.
-  duration      Int?
-  recordingUrl  String?
-  transcript    String?  @db.Text
-  summary       String?  @db.Text
-  outcome       String?
-  vapiCallId    String?
-  agentId       String?
-  agent         Agent?   @relation(fields: [agentId], references: [id])
-  leadId        String?
-  lead          Lead?    @relation(fields: [leadId], references: [id])
-  tenantId      String
-  tenant        Tenant   @relation(fields: [tenantId], references: [id])
-  createdAt     DateTime @default(now())
+  id           String   @id @default(cuid())
+  direction    String
+  status       String
+  duration     Int?
+  recordingUrl String?
+  transcript   String?
+  summary      String?
+  outcome      String?
+  vapiCallId   String?
+  agentId      String?
+  leadId       String?
+  tenantId     String
+  createdAt    DateTime @default(now())
+  agent        Agent?   @relation(fields: [agentId], references: [id])
+  lead         Lead?    @relation(fields: [leadId], references: [id])
+  tenant       Tenant   @relation(fields: [tenantId], references: [id])
 
   @@index([tenantId])
   @@index([leadId])
