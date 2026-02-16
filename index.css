@@ -1,1 +1,24 @@
-/* Tailwind loaded via CDN in index.html */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+}
+
+.navy-bg {
+  background-color: #1E2A38;
+}
+
+.electric-blue {
+  color: #1479FF;
+}
+
+.bg-electric-blue {
+  background-color: #1479FF;
+}
