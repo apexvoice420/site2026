@@ -5,7 +5,6 @@ import Navbar from './components/Navbar';
 import LandingPage from './components/LandingPage';
 import DemoSandbox from './components/DemoSandbox';
 import Dashboard from './components/Dashboard';
-import Dashboard from './components/Dashboard';
 // import LeadPack from './components/LeadPack';
 import Pricing from './components/Pricing';
 import Login from './components/Login';
