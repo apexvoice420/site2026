@@ -15,6 +15,12 @@ const Login: React.FC = () => {
 
         try {
             const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+
+            // Check if we are in production but still hitting localhost
+            if (window.location.hostname !== 'localhost' && API_URL.includes('localhost')) {
+                throw new Error("API URL is not configured. Please set VITE_API_URL in your deployment settings.");
+            }
+
             const response = await fetch(`${API_URL}/api/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -27,13 +33,15 @@ const Login: React.FC = () => {
                 throw new Error(data.error || 'Login failed');
             }
 
-            // Store token if needed (e.g., localStorage)
             localStorage.setItem('token', data.token);
-
-            // Redirect to external CRM
             window.location.href = 'https://apexvoice42033333.vercel.app/dashboard/settings';
         } catch (err: any) {
-            setError(err.message);
+            console.error('Login error:', err);
+            if (err.message === 'Failed to fetch') {
+                setError("Cannot connect to server. Check if backend is running or VITE_API_URL is correct.");
+            } else {
+                setError(err.message);
+            }
         } finally {
             setIsLoading(false);
         }
