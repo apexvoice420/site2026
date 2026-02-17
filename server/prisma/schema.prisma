@@ -42,6 +42,8 @@ model Agent {
   name        String
   status      String   @default("DRAFT")
   vapiAgentId String?
+  phoneNumber String?  // VAPI phone number this agent answers (e.g., +13865595733)
+  voiceId     String?  // VAPI voice ID for TTS
   config      String?  // JSON string for agent configuration
   tenantId    String
   tenant      Tenant   @relation(fields: [tenantId], references: [id])
@@ -51,6 +53,7 @@ model Agent {
   updatedAt   DateTime @updatedAt
 
   @@index([tenantId])
+  @@index([phoneNumber])
 }
 
 model Workflow {

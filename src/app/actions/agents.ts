@@ -46,6 +46,8 @@ export async function updateAgent(id: string, formData: FormData) {
     const name = formData.get("name") as string;
     const status = formData.get("status") as string;
     const vapiAgentId = formData.get("vapiAgentId") as string;
+    const phoneNumber = formData.get("phoneNumber") as string;
+    const voiceId = formData.get("voiceId") as string;
     const prompt = formData.get("prompt") as string;
 
     const configObj = { prompt };
@@ -57,6 +59,8 @@ export async function updateAgent(id: string, formData: FormData) {
             name,
             status,
             vapiAgentId,
+            phoneNumber: phoneNumber || null,
+            voiceId: voiceId || null,
             config
         }
     });

@@ -73,6 +73,32 @@ export default async function AgentDetailPage({ params }: { params: Promise<{ ag
                                 <Label htmlFor="vapiAgentId">Vapi Agent ID</Label>
                                 <Input id="vapiAgentId" name="vapiAgentId" defaultValue={agent.vapiAgentId || ""} placeholder="vapi-..." />
                             </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="phoneNumber">Phone Number</Label>
+                                <Input 
+                                    id="phoneNumber" 
+                                    name="phoneNumber" 
+                                    defaultValue={agent.phoneNumber || ""} 
+                                    placeholder="+1-555-123-4567" 
+                                />
+                                <p className="text-xs text-muted-foreground">The VAPI number this agent answers for inbound routing</p>
+                            </div>
+                            <div className="space-y-2">
+                                <Label htmlFor="voiceId">Voice</Label>
+                                <Select name="voiceId" defaultValue={agent.voiceId || "rachel"}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Select voice" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="rachel">Rachel (Female, US)</SelectItem>
+                                        <SelectItem value="josh">Josh (Male, US)</SelectItem>
+                                        <SelectItem value="bella">Bella (Female, UK)</SelectItem>
+                                        <SelectItem value="antoni">Antoni (Male, UK)</SelectItem>
+                                        <SelectItem value="elli">Elli (Female, US)</SelectItem>
+                                        <SelectItem value="domi">Domi (Male, US)</SelectItem>
+                                    </SelectContent>
+                                </Select>
+                            </div>
                             <Button type="submit" className="w-full">
                                 <Save className="mr-2 h-4 w-4" /> Save Changes
                             </Button>
