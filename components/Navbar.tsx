@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { AppView } from '../types';
-import { Layout, Play, Settings, Package, CreditCard, LogIn } from 'lucide-react';
+import { Layout, Play, Settings, CreditCard, LogIn } from 'lucide-react';
+import Logo from './Logo';
 
 interface NavbarProps {
   currentView: AppView;
@@ -24,11 +25,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentView, setView }) => {
           className="flex items-center gap-3 cursor-pointer group"
           onClick={() => setView(AppView.LANDING)}
         >
-          <img
-            src="/assets/logo.png"
-            alt="Apex Voice Solutions"
-            className="h-10 w-auto group-hover:scale-105 transition-transform"
-          />
+          <Logo className="h-10 w-auto group-hover:scale-105 transition-transform" />
         </div>
 
         <div className="hidden md:flex items-center gap-8">

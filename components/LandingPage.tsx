@@ -3,6 +3,7 @@ import React from 'react';
 import { FEATURES, PRICING_PLANS } from '../constants';
 import { AppView } from '../types';
 import { ChevronRight, Star } from 'lucide-react';
+import Logo from './Logo';
 
 const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) => {
   return (
@@ -24,7 +25,28 @@ const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) =
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
-                onClick={() => setView(AppView.DEMO)}
+                onClick={() => {
+                  console.log('Button clicked: Initializing Vapi...');
+                  try {
+                    // Handle different global names from CDN bundles
+                    const VapiConstructor = (window as any).Vapi || (window as any).vapi || (window as any).VapiSDK;
+
+                    if (!VapiConstructor) {
+                      throw new Error('Vapi SDK not found on window object. Ensure script is loaded.');
+                    }
+
+                    console.log('Using Vapi constructor:', VapiConstructor);
+                    const vapi = new VapiConstructor('a9cf45da-3d34-431c-a59a-bb752c474126');
+
+                    console.log('Vapi instance created. Starting call...');
+                    vapi.start('77a64bc3-9fbc-4edd-ae80-8e3987e2b492');
+
+                    vapi.on('call-start', () => console.log('Vapi call started successfully!'));
+                    vapi.on('error', (e: any) => console.error('Vapi error:', e));
+                  } catch (err) {
+                    console.error('Failed to start Vapi call:', err);
+                  }
+                }}
                 className="bg-[#1479FF] px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-900/40"
               >
                 Launch Free Demo <ChevronRight size={20} />
@@ -167,7 +189,7 @@ const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) =
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-12">
           <div className="space-y-6">
             <div className="flex items-center gap-2">
-              <img src="/assets/logo.png" alt="Apex Voice Solutions" className="h-10 w-auto" />
+              <Logo />
             </div>
             <p className="text-gray-400 max-w-xs text-sm">
               Helping American contractors grow faster through advanced AI voice automation. Never miss a job again.
