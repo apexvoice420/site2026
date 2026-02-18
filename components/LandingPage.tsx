@@ -24,6 +24,15 @@ const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) =
               Stop playing phone tag from the job site. Our AI greets every caller instantly, vets the job, and puts it on your schedule before you’ve even climbed down the ladder.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              <a
+                href="tel:+13863199058"
+                className="bg-[#1479FF] px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all flex flex-col items-center justify-center gap-1 shadow-xl shadow-blue-900/40"
+              >
+                <span className="flex items-center gap-2">
+                  📞 Call for Live Demo
+                </span>
+                <span className="text-sm font-normal opacity-90">+1 (386) 319-9058</span>
+              </a>
               <button
                 onClick={() => {
                   console.log('Button clicked: Initializing Vapi...');
@@ -48,6 +57,7 @@ const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) =
                   }
                 }}
                 className="bg-[#1479FF] px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-900/40"
+              >
               >
                 Launch Free Demo <ChevronRight size={20} />
               </button>

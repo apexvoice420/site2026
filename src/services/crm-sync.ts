@@ -4,24 +4,44 @@ import { VapiPayload } from "@/lib/vapi";
 export async function syncVapiData(payload: VapiPayload) {
     const { message, agent: vapiAgentInfo } = payload;
 
-    // 1. Identify Tenancy & Agent
-    // Ideally, we pass tenantId in metadata, or we look up Agent by vapiAgentId
-    if (!vapiAgentInfo?.id) {
-        console.warn("Sync: No Vapi Agent ID provided.");
-        return null;
+    // 1. Identify Tenancy & Agent via 3-tier lookup
+    let tenantId: string | undefined;
+    let agent: any = null;
+
+    // Method 1: Check metadata for tenantId (outbound calls with context)
+    tenantId = message.metadata?.tenantId;
+
+    // Method 2: Look up by vapiAgentId (if provided in payload)
+    if (!tenantId && vapiAgentInfo?.id) {
+        agent = await db.agent.findFirst({
+            where: { vapiAgentId: vapiAgentInfo.id },
+            include: { tenant: true }
+        });
+        if (agent) tenantId = agent.tenantId;
     }
 
-    const agent = await db.agent.findFirst({
-        where: { vapiAgentId: vapiAgentInfo.id },
-        include: { tenant: true }
-    });
-
-    if (!agent) {
-        console.warn(`Sync: Agent not found for Vapi ID ${vapiAgentInfo.id}`);
-        return null;
+    // Method 3: Look up by called phone number (INBOUND calls)
+    // VAPI sends the destination number in message.call.to or message.to
+    if (!tenantId) {
+        const calledNumber = (message as any).call?.to || (message as any).to;
+        if (calledNumber) {
+            // Normalize phone number (remove spaces, parens, dashes)
+            const normalizedPhone = calledNumber.replace(/[\s\(\)\-]/g, '');
+            agent = await db.agent.findFirst({
+                where: { phoneNumber: { contains: normalizedPhone.slice(-10) } },
+                include: { tenant: true }
+            });
+            if (agent) {
+                tenantId = agent.tenantId;
+                console.log(`Sync: Routed inbound call to ${calledNumber} → Agent ${agent.name} (Tenant: ${agent.tenant?.name})`);
+            }
+        }
     }
 
-    const tenantId = agent.tenantId;
+    if (!tenantId) {
+        console.warn("Sync: Cannot identify tenant for call. Payload:", JSON.stringify(payload).substring(0, 500));
+        return null;
+    }
 
     // 2. Extract Lead Data
     const customerPhone = message.customer?.number || "Unknown";
@@ -71,8 +91,9 @@ export async function syncVapiData(payload: VapiPayload) {
             transcript: transcript,
             summary: summary,
             outcome: outcome,
-            agentId: agent.id,
-            leadId: lead.id
+            agentId: agent?.id,
+            leadId: lead.id,
+            tenantId: tenantId
         }
     });
 

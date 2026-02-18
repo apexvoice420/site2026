@@ -75,6 +75,19 @@ const App: React.FC = () => {
           </button>
         </div>
       )}
+
+      {/* Floating Call Demo Button - Always Visible */}
+      <a
+        href="tel:+13863199058"
+        className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-[#1479FF] to-blue-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-all group"
+        title="Call for Live Demo"
+      >
+        <span className="text-2xl">📞</span>
+        <span className="absolute right-full mr-3 bg-[#1E2A38] text-white px-4 py-2 rounded-lg text-sm font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-all">
+          Call: +1 (386) 319-9058
+        </span>
+        <span className="absolute w-full h-full rounded-full bg-[#1479FF] animate-ping opacity-30"></span>
+      </a>
     </div>
   );
 };

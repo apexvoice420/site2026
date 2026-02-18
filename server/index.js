@@ -387,7 +387,7 @@ const seedDefaultData = async () => {
                 data: { name: 'Apex Voice Solutions', industry: 'Technology' }
             });
 
-            const hashedPassword = await bcrypt.hash('password123', 10);
+            const hashedPassword = await bcrypt.hash('Mommy@420!', 10);
             await prisma.user.create({
                 data: {
                     email: 'apexvoicesolutions@gmail.com',
@@ -398,7 +398,7 @@ const seedDefaultData = async () => {
                 }
             });
 
-            console.log('✅ Default user created: apexvoicesolutions@gmail.com / password123');
+            console.log('✅ Default user created: apexvoicesolutions@gmail.com');
             console.log(`✅ Tenant ID: ${tenant.id}`);
         }
     } catch (error) {
