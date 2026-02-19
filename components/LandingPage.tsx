@@ -58,7 +58,6 @@ const LandingPage: React.FC<{ setView: (v: AppView) => void }> = ({ setView }) =
                 }}
                 className="bg-[#1479FF] px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-600 transition-all flex items-center justify-center gap-2 shadow-xl shadow-blue-900/40"
               >
-              >
                 Launch Free Demo <ChevronRight size={20} />
               </button>
               <a
