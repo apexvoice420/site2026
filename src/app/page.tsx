@@ -8,7 +8,7 @@ import {
   Zap,
   Shield,
   Phone,
-  CheckCircle2,
+  CheckCircle,
   Calendar,
   PlayCircle,
   Activity,

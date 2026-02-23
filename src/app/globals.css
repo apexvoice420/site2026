@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -112,7 +111,7 @@
     content: "";
     position: absolute;
     inset: -1px;
-    background: linear-gradient(to bottom right, white/20, transparent, white/5);
+    background: linear-gradient(to bottom right, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.05));
     border-radius: inherit;
     z-index: -1;
     pointer-events: none;

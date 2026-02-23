@@ -1,21 +1,9 @@
 "use server";
 
+import { triggerWorkflow } from "@/services/workflow-engine";
 import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
 import { requireTenant } from "@/lib/auth";
-
-export async function getLeads() {
-    const tenant = await requireTenant();
-    return await db.lead.findMany({
-        where: { tenantId: tenant.id },
-        orderBy: { createdAt: "desc" },
-        include: {
-            calls: true
-        }
-    });
-}
-
-import { triggerWorkflow } from "@/services/workflow-engine";
 
 export async function createLead(formData: FormData) {
     const tenant = await requireTenant();
