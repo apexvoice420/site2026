@@ -237,11 +237,11 @@ export default function Home() {
 
               <div className="space-y-4 mb-20 text-muted-foreground/80 font-medium">
                 <div className="flex items-center justify-center gap-4">
-                  <CheckCircle2 className="h-5 w-5 text-primary" />
+                  <CheckCircle className="h-5 w-5 text-primary" />
                   <span>Unlimited Neural Voices</span>
                 </div>
                 <div className="flex items-center justify-center gap-4 opacity-70">
-                  <CheckCircle2 className="h-5 w-5 text-primary" />
+                  <CheckCircle className="h-5 w-5 text-primary" />
                   <span>Direct API CRM Integration</span>
                 </div>
               </div>
