@@ -11,7 +11,10 @@ export default async function SettingsPage() {
     let settings;
     try {
         settings = await getSettings();
-    } catch (e) {
+    } catch (e: any) {
+        if (e?.digest?.startsWith("NEXT_REDIRECT") || e?.message === "NEXT_REDIRECT") {
+            throw e;
+        }
         console.error("Settings Load Error:", e);
         return <div className="p-6 text-red-500">Error loading settings: {(e as Error).message}</div>;
     }

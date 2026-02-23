@@ -107,7 +107,9 @@ export default async function LeadsPage() {
                                 <TableCell>{lead.phone}</TableCell>
                                 <TableCell>{lead.createdAt.toLocaleDateString()}</TableCell>
                                 <TableCell className="text-right">
-                                    <Button variant="ghost" size="sm">View</Button>
+                                    <Link href={`/dashboard/leads/${lead.id}`}>
+                                        <Button variant="ghost" size="sm">View</Button>
+                                    </Link>
                                 </TableCell>
                             </TableRow>
                         ))}

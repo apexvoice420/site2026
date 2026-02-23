@@ -15,6 +15,8 @@ export async function getLeads() {
     });
 }
 
+import { triggerWorkflow } from "@/services/workflow-engine";
+
 export async function createLead(formData: FormData) {
     const tenant = await requireTenant();
     const firstName = formData.get("firstName") as string;
@@ -22,7 +24,7 @@ export async function createLead(formData: FormData) {
     const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
 
-    await db.lead.create({
+    const lead = await db.lead.create({
         data: {
             firstName,
             lastName,
@@ -35,5 +37,19 @@ export async function createLead(formData: FormData) {
         }
     });
 
+    // Trigger Workflow
+    await triggerWorkflow("LEAD_CREATED", { lead });
+
     revalidatePath("/dashboard/leads");
 }
+
+export async function getLead(leadId: string) {
+    const tenant = await requireTenant();
+    return await db.lead.findUnique({
+        where: { id: leadId, tenantId: tenant.id },
+        include: {
+            calls: true
+        }
+    });
+}
+
