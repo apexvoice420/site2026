@@ -28,7 +28,6 @@ export function VapiVoiceDemo() {
   const vapiRef = useRef<VapiInstance | null>(null);
 
   useEffect(() => {
-    // Load VAPI Web SDK
     const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/index.global.js";
     script.async = true;
@@ -43,11 +42,10 @@ export function VapiVoiceDemo() {
     document.body.appendChild(script);
 
     return () => {
-      // Cleanup on unmount
       if (vapiRef.current) {
         vapiRef.current.stop();
       }
-      document.body.removeChild(script);
+      try { document.body.removeChild(script); } catch {}
     };
   }, []);
 
@@ -61,11 +59,9 @@ export function VapiVoiceDemo() {
     try {
       setStatus("Connecting...");
       
-      // Create VAPI instance
       const vapi = new window.Vapi(VAPI_PUBLIC_KEY);
       vapiRef.current = vapi;
 
-      // Event handlers
       vapi.on("call-start", () => {
         console.log("Call started");
         setIsCalling(true);
@@ -85,15 +81,6 @@ export function VapiVoiceDemo() {
         setIsCalling(false);
       });
 
-      vapi.on("speech-start", () => {
-        console.log("Agent speaking");
-      });
-
-      vapi.on("speech-end", () => {
-        console.log("Agent stopped speaking");
-      });
-
-      // Start the call with assistant ID
       vapi.start(DEMO_ASSISTANT_ID);
     } catch (err) {
       console.error("Failed to start call:", err);
@@ -114,14 +101,11 @@ export function VapiVoiceDemo() {
     <div className="w-full max-w-sm glass-chrome rounded-[2.5rem] p-10 flex flex-col items-center gap-10 glow-border relative overflow-hidden group">
       <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
 
-      {/* Audiophile Visualizer */}
       <div className="relative mb-4">
         <div className={`absolute inset-0 bg-primary/20 rounded-full blur-2xl transition-all duration-1000 ${isCalling ? "scale-150 opacity-100" : "scale-50 opacity-0"}`}></div>
         <div className={`w-32 h-32 rounded-full border-2 flex items-center justify-center transition-all duration-700 ${isCalling ? "border-primary bg-primary/10 shadow-[0_0_60px_rgba(99,102,241,0.3)] ring-8 ring-primary/5" : "border-white/10 bg-white/5"}`}>
           <Bot className={`h-16 w-16 transition-colors duration-700 ${isCalling ? "text-primary" : "text-white/20"}`} />
         </div>
-
-        {/* Animated Waves around the bot */}
         {isCalling && (
           <div className="absolute -inset-4 border border-primary/20 rounded-full animate-ping"></div>
         )}
