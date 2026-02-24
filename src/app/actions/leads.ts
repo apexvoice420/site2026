@@ -40,4 +40,10 @@ export async function getLead(leadId: string) {
         }
     });
 }
-
+export async function getLeads() {
+    const tenant = await requireTenant();
+    return await db.lead.findMany({
+        where: { tenantId: tenant.id },
+        orderBy: { createdAt: "desc" }
+    });
+}
