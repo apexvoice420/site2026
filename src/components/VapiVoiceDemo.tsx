@@ -6,23 +6,18 @@ import { Bot, Phone, PhoneOff, Activity, ShieldCheck, Zap } from "lucide-react";
 
 declare global {
   interface Window {
-    vapiSDK: {
-      run: (config: {
-        apiKey: string;
-        assistant: string;
-        config?: {
-          transcription?: { enabled: boolean };
-        };
-      }) => {
-        start: () => void;
-        stop: () => void;
-        on: (event: string, callback: (data: unknown) => void) => void;
-      };
-    };
+    Vapi: new (apiKey: string) => VapiInstance;
   }
 }
 
-// Demo assistant ID - the "Apex Demo AI Receptionist"
+interface VapiInstance {
+  start: (assistantId: string) => void;
+  stop: () => void;
+  on: (event: string, callback: (data?: unknown) => void) => void;
+  off: (event: string, callback: (data?: unknown) => void) => void;
+}
+
+// VAPI Public Key and Assistant ID
 const VAPI_PUBLIC_KEY = "140ada0a-5ae8-47f8-bc9f-5c912f339258";
 const DEMO_ASSISTANT_ID = "77a64bc3-9fbc-4edd-ae80-8e3987e2b492"; // Apex Demo AI Receptionist
 
@@ -30,48 +25,55 @@ export function VapiVoiceDemo() {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isCalling, setIsCalling] = useState(false);
   const [status, setStatus] = useState("Standby");
-  const vapiRef = useRef<ReturnType<typeof window.vapiSDK.run> | null>(null);
+  const vapiRef = useRef<VapiInstance | null>(null);
 
   useEffect(() => {
+    // Load VAPI Web SDK
     const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/gh/balacodeio/Vapi-Web-UMD@latest/dist/latest/vapi-web-bundle.min.js";
+    script.src = "https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/index.global.js";
     script.async = true;
-    script.onload = () => setIsLoaded(true);
+    script.onload = () => {
+      console.log("VAPI SDK loaded");
+      setIsLoaded(true);
+    };
+    script.onerror = () => {
+      console.error("Failed to load VAPI SDK");
+      setStatus("SDK Load Error");
+    };
     document.body.appendChild(script);
 
     return () => {
+      // Cleanup on unmount
+      if (vapiRef.current) {
+        vapiRef.current.stop();
+      }
       document.body.removeChild(script);
     };
   }, []);
 
   const startCall = () => {
-    if (!window.vapiSDK || !isLoaded) {
+    if (!window.Vapi) {
       console.error("VAPI SDK not loaded");
-      setStatus("Error: SDK not loaded");
+      setStatus("SDK Not Ready");
       return;
     }
 
     try {
       setStatus("Connecting...");
       
-      // Initialize VAPI with assistant
-      const vapi = window.vapiSDK.run({
-        apiKey: VAPI_PUBLIC_KEY,
-        assistant: DEMO_ASSISTANT_ID,
-        config: {
-          transcription: { enabled: true },
-        },
-      });
-
+      // Create VAPI instance
+      const vapi = new window.Vapi(VAPI_PUBLIC_KEY);
       vapiRef.current = vapi;
 
       // Event handlers
       vapi.on("call-start", () => {
+        console.log("Call started");
         setIsCalling(true);
         setStatus("Active Feed");
       });
 
       vapi.on("call-end", () => {
+        console.log("Call ended");
         setIsCalling(false);
         setStatus("Standby");
         vapiRef.current = null;
@@ -83,8 +85,16 @@ export function VapiVoiceDemo() {
         setIsCalling(false);
       });
 
-      // Start the call
-      vapi.start();
+      vapi.on("speech-start", () => {
+        console.log("Agent speaking");
+      });
+
+      vapi.on("speech-end", () => {
+        console.log("Agent stopped speaking");
+      });
+
+      // Start the call with assistant ID
+      vapi.start(DEMO_ASSISTANT_ID);
     } catch (err) {
       console.error("Failed to start call:", err);
       setStatus("Failed to Connect");
@@ -97,14 +107,6 @@ export function VapiVoiceDemo() {
       setIsCalling(false);
       setStatus("Standby");
       vapiRef.current = null;
-    }
-  };
-
-  const toggleCall = () => {
-    if (isCalling) {
-      endCall();
-    } else {
-      startCall();
     }
   };
 
@@ -135,7 +137,7 @@ export function VapiVoiceDemo() {
       <div className="flex gap-4 w-full">
         <Button
           size="lg"
-          onClick={toggleCall}
+          onClick={isCalling ? endCall : startCall}
           disabled={!isLoaded}
           className={`flex-1 h-16 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all shadow-2xl ${isCalling ? "bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20" : "bg-primary text-primary-foreground hover:scale-[1.02] shadow-primary/20"}`}
         >
