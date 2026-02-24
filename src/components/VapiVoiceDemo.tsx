@@ -9,41 +9,31 @@ const VAPI_PUBLIC_KEY = "140ada0a-5ae8-47f8-bc9f-5c912f339258";
 const DEMO_ASSISTANT_ID = "77a64bc3-9fbc-4edd-ae80-8e3987e2b492";
 
 export function VapiVoiceDemo() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [vapiInstance, setVapiInstance] = useState<any>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isCalling, setIsCalling] = useState(false);
   const [status, setStatus] = useState("Standby");
   const [error, setError] = useState<string | null>(null);
-  const vapiRef = useRef<any>(null);
+  const callRef = useRef<any>(null);
 
   useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/@vapi-ai/web@2.5.2/dist/vapi.js";
-    script.async = true;
-    
-    script.onload = () => {
-      console.log("VAPI SDK loaded");
-      setIsLoading(false);
-    };
-    
-    script.onerror = () => {
-      console.error("Failed to load VAPI SDK");
-      setError("Failed to load voice SDK");
-      setIsLoading(false);
-    };
-    
-    document.body.appendChild(script);
-
-    return () => {
-      if (vapiRef.current) {
-        try { vapiRef.current.stop(); } catch {}
-      }
-      try { document.body.removeChild(script); } catch {}
-    };
+    // Dynamic import of VAPI
+    import("@vapi-ai/web")
+      .then((module) => {
+        const VapiClass = module.default;
+        const instance = new VapiClass(VAPI_PUBLIC_KEY);
+        setVapiInstance(instance);
+        setIsLoaded(true);
+        console.log("VAPI SDK loaded successfully");
+      })
+      .catch((err) => {
+        console.error("Failed to load VAPI:", err);
+        setError("Failed to load voice SDK");
+      });
   }, []);
 
   const startCall = async () => {
-    // @ts-ignore
-    if (!window.Vapi) {
+    if (!vapiInstance) {
       setError("Voice SDK not ready");
       return;
     }
@@ -52,35 +42,30 @@ export function VapiVoiceDemo() {
       setStatus("Connecting...");
       setError(null);
 
-      // @ts-ignore
-      const vapi = new window.Vapi(VAPI_PUBLIC_KEY);
-      vapiRef.current = vapi;
-
-      vapi.on("call-start", () => {
+      // Set up event listeners
+      vapiInstance.on("call-start", () => {
         console.log("Call started");
         setIsCalling(true);
         setStatus("Active Feed");
       });
 
-      vapi.on("call-end", () => {
+      vapiInstance.on("call-end", () => {
         console.log("Call ended");
         setIsCalling(false);
         setStatus("Standby");
-        vapiRef.current = null;
+        callRef.current = null;
       });
 
-      vapi.on("error", (e: any) => {
+      vapiInstance.on("error", (e: any) => {
         console.error("VAPI error:", e);
-        setError(e?.message || "Connection failed");
+        const errorMsg = e?.msg || e?.message || "Connection failed";
+        setError(errorMsg);
         setStatus("Error");
         setIsCalling(false);
       });
 
-      vapi.on("message", (msg: any) => {
-        console.log("VAPI message:", msg);
-      });
-
-      await vapi.start(DEMO_ASSISTANT_ID);
+      // Start the call
+      callRef.current = await vapiInstance.start(DEMO_ASSISTANT_ID);
       
     } catch (err: any) {
       console.error("Failed to start:", err);
@@ -90,13 +75,24 @@ export function VapiVoiceDemo() {
   };
 
   const endCall = () => {
-    if (vapiRef.current) {
-      try { vapiRef.current.stop(); } catch {}
+    if (vapiInstance && isCalling) {
+      try {
+        vapiInstance.stop();
+      } catch {}
     }
     setIsCalling(false);
     setStatus("Standby");
-    vapiRef.current = null;
+    callRef.current = null;
   };
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (vapiInstance && isCalling) {
+        try { vapiInstance.stop(); } catch {}
+      }
+    };
+  }, [vapiInstance, isCalling]);
 
   return (
     <div className="w-full max-w-sm glass-chrome rounded-[2.5rem] p-10 flex flex-col items-center gap-10 glow-border relative overflow-hidden group">
@@ -127,10 +123,10 @@ export function VapiVoiceDemo() {
         <Button
           size="lg"
           onClick={isCalling ? endCall : startCall}
-          disabled={isLoading}
+          disabled={!isLoaded}
           className={`flex-1 h-16 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all shadow-2xl ${isCalling ? "bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20" : "bg-primary text-primary-foreground hover:scale-[1.02] shadow-primary/20"}`}
         >
-          {isLoading ? (
+          {!isLoaded ? (
             "Loading..."
           ) : isCalling ? (
             <>
@@ -152,7 +148,7 @@ export function VapiVoiceDemo() {
 
       {error && (
         <p className="text-[10px] text-red-400/60 text-center">
-          Make sure to allow microphone access
+          Make sure to allow microphone access when prompted
         </p>
       )}
     </div>
