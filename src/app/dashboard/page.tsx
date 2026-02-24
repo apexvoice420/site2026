@@ -3,6 +3,8 @@ import { Users, Phone, Activity, CreditCard, MessageSquare } from "lucide-react"
 import db from "@/lib/db";
 import { requireTenant } from "@/lib/auth";
 
+export const dynamic = 'force-dynamic';
+
 export default async function DashboardPage() {
     const tenant = await requireTenant();
 
