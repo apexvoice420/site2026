@@ -221,40 +221,136 @@ export default function Home() {
           </div>
         </section>
 
-        {/* High-End Access Section */}
+        {/* Pricing Section - 3 Tiers */}
         <section id="pricing" className="py-32 relative">
           <div className="container mx-auto px-6">
-            <div className="max-w-3xl mx-auto glass-chrome rounded-[4rem] p-16 md:p-24 text-center glow-border group overflow-hidden">
-              {/* Backdrop Glow */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 blur-[100px] -z-10 group-hover:scale-150 transition-transform duration-1000"></div>
+            <div className="text-center mb-20">
+              <h2 className="text-5xl md:text-6xl font-black tracking-tighter mb-6 uppercase">Choose Your Protocol.</h2>
+              <p className="text-xl text-muted-foreground/60 max-w-2xl mx-auto">
+                Scalable voice infrastructure. From solo operators to enterprise fleets.
+              </p>
+            </div>
 
-              <h2 className="text-4xl md:text-5xl font-bold mb-8">Ready for Deployment?</h2>
-              <div className="inline-flex items-center gap-1 text-5xl font-black mb-12">
-                <span className="opacity-40 text-2xl">$</span>
-                <span>297</span>
-                <span className="text-lg font-bold opacity-30 uppercase tracking-tighter">/ Activation</span>
-              </div>
-
-              <div className="space-y-4 mb-20 text-muted-foreground/80 font-medium">
-                <div className="flex items-center justify-center gap-4">
-                  <CheckCircle className="h-5 w-5 text-primary" />
-                  <span>Unlimited Neural Voices</span>
+            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+              {/* Starter Tier */}
+              <div className="glass-chrome rounded-[3rem] p-10 flex flex-col glow-border group">
+                <div className="mb-8">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground/60">Starter</span>
+                  <div className="mt-4 flex items-baseline gap-1">
+                    <span className="text-4xl font-black">$97</span>
+                    <span className="text-sm opacity-40">/activation</span>
+                  </div>
+                  <p className="mt-4 text-sm text-muted-foreground/70">Perfect for solo operators testing the waters.</p>
                 </div>
-                <div className="flex items-center justify-center gap-4 opacity-70">
-                  <CheckCircle className="h-5 w-5 text-primary" />
-                  <span>Direct API CRM Integration</span>
-                </div>
-              </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <Link href="/dashboard" className="w-full sm:w-auto">
-                  <Button className="w-full sm:w-auto h-16 px-12 bg-primary text-primary-foreground rounded-2xl text-lg font-bold shadow-2xl transition-transform active:scale-95">
-                    Grant System Access
+                <ul className="space-y-4 mb-10 flex-1 text-sm">
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>1 AI Voice Agent</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>500 minutes/month</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>Basic CRM integration</span>
+                  </li>
+                  <li className="flex items-center gap-3 opacity-40">
+                    <CheckCircle className="h-4 w-4 shrink-0" />
+                    <span>Email support</span>
+                  </li>
+                </ul>
+
+                <Link href="#book">
+                  <Button variant="outline" className="w-full h-14 rounded-2xl text-sm font-bold uppercase tracking-wider">
+                    Get Started
                   </Button>
                 </Link>
-                <Link href="#book" className="w-full sm:w-auto">
-                  <Button variant="ghost" className="w-full sm:w-auto h-16 px-12 text-lg font-bold opacity-60 hover:opacity-100">
-                    Custom Solution
+              </div>
+
+              {/* Professional Tier - Featured */}
+              <div className="glass-chrome rounded-[3rem] p-10 flex flex-col glow-border relative border-primary/30 group">
+                <div className="absolute -top-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest rounded-full">
+                  Most Popular
+                </div>
+
+                <div className="mb-8">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">Professional</span>
+                  <div className="mt-4 flex items-baseline gap-1">
+                    <span className="text-5xl font-black">$297</span>
+                    <span className="text-sm opacity-40">/activation</span>
+                  </div>
+                  <p className="mt-4 text-sm text-muted-foreground/70">For growing businesses ready to scale.</p>
+                </div>
+
+                <ul className="space-y-4 mb-10 flex-1 text-sm">
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>3 AI Voice Agents</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>2,000 minutes/month</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>Advanced CRM sync (GHL, HubSpot)</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>Call transcription & analytics</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>Priority support</span>
+                  </li>
+                </ul>
+
+                <Link href="#book">
+                  <Button className="w-full h-14 rounded-2xl text-sm font-bold uppercase tracking-wider shadow-2xl">
+                    Deploy Now
+                  </Button>
+                </Link>
+              </div>
+
+              {/* Enterprise Tier */}
+              <div className="glass-chrome rounded-[3rem] p-10 flex flex-col glow-border group">
+                <div className="mb-8">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground/60">Enterprise</span>
+                  <div className="mt-4 flex items-baseline gap-1">
+                    <span className="text-4xl font-black">$997</span>
+                    <span className="text-sm opacity-40">/activation</span>
+                  </div>
+                  <p className="mt-4 text-sm text-muted-foreground/70">Full-scale operations with custom needs.</p>
+                </div>
+
+                <ul className="space-y-4 mb-10 flex-1 text-sm">
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>Unlimited AI Agents</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>Unlimited minutes</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>Custom integrations & webhooks</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>Dedicated account manager</span>
+                  </li>
+                  <li className="flex items-center gap-3">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    <span>SLA guarantee & 24/7 support</span>
+                  </li>
+                </ul>
+
+                <Link href="#book">
+                  <Button variant="outline" className="w-full h-14 rounded-2xl text-sm font-bold uppercase tracking-wider">
+                    Contact Sales
                   </Button>
                 </Link>
               </div>
