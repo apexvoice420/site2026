@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Bot, Phone, PhoneOff, Activity, ShieldCheck, Zap, Volume2 } from "lucide-react";
 
 // VAPI Configuration
-const VAPI_PUBLIC_KEY = "140ada0a-5ae8-47f8-bc9f-5c912f339258";
+const VAPI_PUBLIC_KEY = "a9cf45da-3d34-431c-a59a-bb752c474126";
 const DEMO_ASSISTANT_ID = "77a64bc3-9fbc-4edd-ae80-8e3987e2b492";
 
 export function VapiVoiceDemo() {
