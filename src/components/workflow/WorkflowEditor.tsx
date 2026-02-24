@@ -14,6 +14,7 @@ import {
     BackgroundVariant,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { useRouter } from 'next/navigation';
 
 import { Button } from "@/components/ui/button";
 import { Save } from "lucide-react";
@@ -26,6 +27,7 @@ const initialNodesDefault: any[] = [
 const initialEdgesDefault: any[] = [{ id: 'e1-2', source: '1', target: '2' }];
 
 export function WorkflowEditor({ workflowId, initialData }: { workflowId: string, initialData?: any }) {
+    const router = useRouter();
     const [nodes, setNodes, onNodesChange] = useNodesState(initialData?.nodes || initialNodesDefault);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialData?.edges || initialEdgesDefault);
 
@@ -38,7 +40,11 @@ export function WorkflowEditor({ workflowId, initialData }: { workflowId: string
         console.log("Saving workflow...", { nodes, edges });
         const result = await saveWorkflow(workflowId, { nodes, edges });
         if (result.success) {
-            alert("Workflow saved!");
+            if (workflowId === 'new' && result.id) {
+                router.push(`/dashboard/workflows/${result.id}`);
+            } else {
+                alert("Workflow saved!");
+            }
         }
     };
 

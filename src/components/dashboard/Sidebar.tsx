@@ -13,6 +13,7 @@ import {
   Settings,
   LogOut
 } from "lucide-react";
+import { SignOutButton } from "@clerk/nextjs";
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -53,10 +54,12 @@ export function Sidebar() {
         })}
       </nav>
       <div className="p-4 border-t">
-         <Button variant="ghost" className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50">
+        <SignOutButton>
+          <Button variant="ghost" className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50">
             <LogOut className="mr-2 h-4 w-4" />
             Sign Out
-         </Button>
+          </Button>
+        </SignOutButton>
       </div>
     </div>
   );

@@ -7,9 +7,10 @@ export async function getCallLogs() {
     const tenant = await requireTenant();
     return await db.callLog.findMany({
         where: {
-            agent: {
-                tenantId: tenant.id
-            }
+            OR: [
+                { agent: { tenantId: tenant.id } },
+                { lead: { tenantId: tenant.id } }
+            ]
         },
         orderBy: { createdAt: "desc" },
         include: {

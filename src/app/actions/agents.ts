@@ -2,6 +2,7 @@
 
 import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 import { requireTenant } from "@/lib/auth";
 
 export async function getAgents() {
@@ -31,7 +32,7 @@ export async function createAgent(formData: FormData) {
         },
     });
 
-    revalidatePath("/dashboard/agents");
+    revalidatePath("/dashboard/agents"); redirect("/dashboard/agents");
 }
 
 export async function getAgent(id: string) {

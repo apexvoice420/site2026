@@ -10,7 +10,7 @@ export async function saveWorkflow(id: string, data: any) {
     const edges = JSON.stringify(data.edges);
 
     if (id === 'new') {
-        await db.workflow.create({
+        const newWorkflow = await db.workflow.create({
             data: {
                 name: "New Workflow",
                 trigger: "INCOMING_CALL",
@@ -19,6 +19,7 @@ export async function saveWorkflow(id: string, data: any) {
                 tenantId: tenant.id
             }
         });
+        return { success: true, id: newWorkflow.id };
     } else {
         await db.workflow.update({
             where: { id, tenantId: tenant.id },
@@ -31,5 +32,5 @@ export async function saveWorkflow(id: string, data: any) {
 
     revalidatePath("/dashboard/workflows");
     revalidatePath(`/dashboard/workflows/${id}`);
-    return { success: true };
+    return { success: true, id };
 }
