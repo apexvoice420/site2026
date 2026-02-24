@@ -3,23 +3,45 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Bot, Phone, PhoneOff, Activity, ShieldCheck, Zap } from "lucide-react";
-import Vapi from "@vapi-ai/web";
 
 // VAPI Public Key and Assistant ID
 const VAPI_PUBLIC_KEY = "140ada0a-5ae8-47f8-bc9f-5c912f339258";
 const DEMO_ASSISTANT_ID = "77a64bc3-9fbc-4edd-ae80-8e3987e2b492"; // Apex Demo AI Receptionist
 
+// Dynamic import for Vapi (client-side only)
+let VapiClass: typeof import("@vapi-ai/web").default | null = null;
+
 export function VapiVoiceDemo() {
-  const [isLoaded, setIsLoaded] = useState(true);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [isCalling, setIsCalling] = useState(false);
   const [status, setStatus] = useState("Standby");
-  const vapiRef = useRef<Vapi | null>(null);
+  const vapiRef = useRef<InstanceType<typeof import("@vapi-ai/web").default> | null>(null);
+
+  useEffect(() => {
+    // Dynamically import Vapi on client side
+    import("@vapi-ai/web")
+      .then((module) => {
+        VapiClass = module.default;
+        setIsLoaded(true);
+        console.log("VAPI SDK loaded successfully");
+      })
+      .catch((err) => {
+        console.error("Failed to load VAPI SDK:", err);
+        setStatus("SDK Load Error");
+      });
+  }, []);
 
   const startCall = () => {
+    if (!VapiClass) {
+      console.error("VAPI SDK not loaded");
+      setStatus("SDK Not Ready");
+      return;
+    }
+
     try {
       setStatus("Connecting...");
       
-      const vapi = new Vapi(VAPI_PUBLIC_KEY);
+      const vapi = new VapiClass(VAPI_PUBLIC_KEY);
       vapiRef.current = vapi;
 
       vapi.on("call-start", () => {
@@ -90,6 +112,7 @@ export function VapiVoiceDemo() {
         <Button
           size="lg"
           onClick={isCalling ? endCall : startCall}
+          disabled={!isLoaded}
           className={`flex-1 h-16 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all shadow-2xl ${isCalling ? "bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20" : "bg-primary text-primary-foreground hover:scale-[1.02] shadow-primary/20"}`}
         >
           {isCalling ? (
@@ -109,6 +132,10 @@ export function VapiVoiceDemo() {
         <Activity className="h-4 w-4" />
         <ShieldCheck className="h-4 w-4" />
       </div>
+
+      {!isLoaded && (
+        <div className="text-[10px] text-muted-foreground/40">Loading voice SDK...</div>
+      )}
     </div>
   );
 }
