@@ -29,10 +29,11 @@ export function VapiVoiceDemo() {
 
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/dist/index.global.js";
+    // Correct CDN path for @vapi-ai/web
+    script.src = "https://cdn.jsdelivr.net/npm/@vapi-ai/web@2.5.2/dist/vapi.js";
     script.async = true;
     script.onload = () => {
-      console.log("VAPI SDK loaded");
+      console.log("VAPI SDK loaded successfully");
       setIsLoaded(true);
     };
     script.onerror = () => {
