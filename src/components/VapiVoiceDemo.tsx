@@ -16,7 +16,6 @@ export function VapiVoiceDemo() {
   const vapiRef = useRef<any>(null);
 
   useEffect(() => {
-    // Load VAPI SDK
     const script = document.createElement("script");
     script.src = "https://cdn.jsdelivr.net/npm/@vapi-ai/web@2.5.2/dist/vapi.js";
     script.async = true;
@@ -81,7 +80,6 @@ export function VapiVoiceDemo() {
         console.log("VAPI message:", msg);
       });
 
-      // Start with assistant ID
       await vapi.start(DEMO_ASSISTANT_ID);
       
     } catch (err: any) {
@@ -93,9 +91,7 @@ export function VapiVoiceDemo() {
 
   const endCall = () => {
     if (vapiRef.current) {
-      try {
-        vapiRef.current.stop();
-      } catch {}
+      try { vapiRef.current.stop(); } catch {}
     }
     setIsCalling(false);
     setStatus("Standby");

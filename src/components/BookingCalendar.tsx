@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Calendar, Clock, Phone } from "lucide-react";
+import { Calendar, Clock } from "lucide-react";
 
 export function BookingCalendar() {
   return (
@@ -9,15 +9,13 @@ export function BookingCalendar() {
       <div className="absolute inset-0 bg-white/[0.02] pointer-events-none rounded-[3rem]"></div>
       
       {/* Header */}
-      <div className="relative z-10 mb-6 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
-            <Calendar className="h-6 w-6 text-primary" />
-          </div>
-          <div>
-            <h3 className="font-bold">Book a Demo</h3>
-            <p className="text-xs text-muted-foreground">15-minute consultation</p>
-          </div>
+      <div className="relative z-10 mb-6 flex items-center gap-3">
+        <div className="w-12 h-12 bg-primary/20 rounded-xl flex items-center justify-center">
+          <Calendar className="h-6 w-6 text-primary" />
+        </div>
+        <div>
+          <h3 className="font-bold">Book a Demo</h3>
+          <p className="text-xs text-muted-foreground">15-minute consultation</p>
         </div>
       </div>
 
@@ -46,18 +44,6 @@ export function BookingCalendar() {
             Open Booking Calendar
           </Button>
         </a>
-
-        {/* Phone Option */}
-        <div className="pt-4 border-t border-white/10 w-full max-w-xs">
-          <p className="text-xs text-muted-foreground mb-3">Or call directly:</p>
-          <a 
-            href="tel:+13862825413"
-            className="flex items-center justify-center gap-2 text-lg font-bold hover:text-primary transition-colors"
-          >
-            <Phone className="h-5 w-5" />
-            +1 (386) 282-5413
-          </a>
-        </div>
       </div>
 
       {/* Footer */}
