@@ -41,9 +41,9 @@ export default function Home() {
             <Link href="#pricing" className="hover:text-foreground transition-colors">Access</Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Link href="/dashboard">
+            <Link href="https://crm.apexvoicesolutions.org">
               <Button variant="outline" className="h-11 px-6 glass-chrome border-white/10 rounded-full text-xs font-bold uppercase tracking-widest hover:bg-white/5">
-                Dashboard
+                Login
               </Button>
             </Link>
             <Link href="#book">
