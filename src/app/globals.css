@@ -100,11 +100,16 @@
   }
 
   .glass-chrome {
-    @apply bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)];
+    @apply bg-white/5 border border-white/10;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    will-change: auto;
   }
 
   .glow-border {
     position: relative;
+    contain: layout style;
   }
 
   .glow-border::after {
