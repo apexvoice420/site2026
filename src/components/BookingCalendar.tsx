@@ -4,22 +4,27 @@ import { useEffect } from "react";
 
 export function BookingCalendar() {
     useEffect(() => {
+        // Cal.com embed
         const script = document.createElement("script");
-        script.src = "https://assets.calendly.com/assets/external/widget.js";
+        script.src = "https://app.cal.com/embed/embed.js";
         script.async = true;
+        script.id = "calcom-embed";
         document.body.appendChild(script);
 
         return () => {
-            document.body.removeChild(script);
+            const existing = document.getElementById("calcom-embed");
+            if (existing) document.body.removeChild(existing);
         };
     }, []);
 
     return (
         <div className="w-full h-[650px] glass-chrome rounded-[3rem] p-4 glow-border overflow-hidden relative">
             <div className="absolute inset-0 bg-white/[0.02] pointer-events-none"></div>
-            <div
-                className="calendly-inline-widget w-full h-full invert hue-rotate-180 brightness-150 rounded-[2rem] overflow-hidden"
-                data-url="https://calendly.com/apex-voice/demo?hide_event_type_details=1&hide_gdpr_banner=1&primary_color=6366f1"
+            {/* Cal.com embed - replace with your actual booking link */}
+            <div 
+                className="cal-embed w-full h-full rounded-[2rem] overflow-hidden"
+                data-cal-link="apexvoicesolutions/demo"
+                data-config='{"layout":"month_view","theme":"dark"}'
             />
         </div>
     );
