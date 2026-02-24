@@ -36,7 +36,7 @@ export function BookingCalendar() {
 
         {/* Cal.com Button */}
         <a 
-          href="https://cal.com/apexvoicesolutions/demo" 
+          href="https://cal.com/maurice-pinnock-lrwndd" 
           target="_blank" 
           rel="noopener noreferrer"
           className="w-full max-w-xs"
