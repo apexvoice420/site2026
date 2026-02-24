@@ -23,9 +23,9 @@ import { BookingCalendar } from "@/components/BookingCalendar";
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20 transition-colors duration-1000 font-sans">
-      {/* Ultra-Premium Navigation */}
+      {/* Ultra-Premium Navigation - Always show desktop layout */}
       <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/50 backdrop-blur-2xl">
-        <div className="container mx-auto flex h-20 items-center justify-between px-6 lg:px-12">
+        <div className="container mx-auto flex h-20 items-center justify-between px-12">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 glass-chrome rounded-xl flex items-center justify-center glow-border">
               <Bot className="h-6 w-6 text-primary" />
@@ -34,7 +34,7 @@ export default function Home() {
               Apex <span className="text-muted-foreground font-light">Voice</span>
             </span>
           </div>
-          <nav className="hidden lg:flex items-center gap-10 text-[13px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
+          <nav className="flex items-center gap-10 text-[13px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
             <Link href="#features" className="hover:text-foreground transition-colors">Intelligence</Link>
             <Link href="#solutions" className="hover:text-foreground transition-colors">Solutions</Link>
             <Link href="#demo" className="hover:text-foreground transition-colors">Live Feed</Link>
@@ -57,7 +57,7 @@ export default function Home() {
 
       <main className="flex-1">
         {/* V4 Hero - Status: Active */}
-        <section className="relative pt-32 pb-48 lg:pt-48 lg:pb-64 overflow-hidden">
+        <section className="relative pt-48 pb-64 overflow-hidden">
           {/* Ambient Lighting */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-primary/5 blur-[160px] rounded-full -z-10"></div>
 
@@ -73,17 +73,17 @@ export default function Home() {
               </div>
             </div>
 
-            <h1 className="text-6xl md:text-[140px] font-black tracking-[-0.04em] leading-[0.85] mb-12 animate-in fade-in zoom-in-95 duration-1000 delay-200">
+            <h1 className="text-[140px] font-black tracking-[-0.04em] leading-[0.85] mb-12 animate-in fade-in zoom-in-95 duration-1000 delay-200">
               ELIMINATE THE <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/30">MISSED CALL.</span>
             </h1>
 
-            <p className="max-w-[800px] mx-auto text-lg md:text-2xl text-muted-foreground/80 font-medium leading-relaxed mb-16 px-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500 text-pretty">
-              Advanced voice-native intelligence that captures, qualifies, and <br className="hidden md:block" />
+            <p className="max-w-[800px] mx-auto text-2xl text-muted-foreground/80 font-medium leading-relaxed mb-16 px-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500 text-pretty">
+              Advanced voice-native intelligence that captures, qualifies, and <br />
               synchronizes every opportunity while you sleep.
             </p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-8 animate-in fade-in slide-in-from-bottom-16 duration-1000 delay-700">
+            <div className="flex items-center justify-center gap-8 animate-in fade-in slide-in-from-bottom-16 duration-1000 delay-700">
               <Link href="#demo">
                 <Button className="h-20 px-12 group bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl text-lg font-bold shadow-2xl transition-all active:scale-95">
                   <Activity className="mr-4 h-6 w-6 group-hover:scale-125 transition-transform" />
@@ -99,12 +99,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Bento Grid Features */}
+        {/* Bento Grid Features - Always 4 columns */}
         <section id="features" className="py-32 relative">
-          <div className="container mx-auto px-6 lg:px-12">
-            <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-6 h-full md:h-[800px]">
+          <div className="container mx-auto px-12">
+            <div className="grid grid-cols-4 grid-rows-2 gap-6 h-[800px]">
               {/* Main Bento Tile */}
-              <div className="md:col-span-2 md:row-span-2 glass-chrome rounded-[3rem] p-12 flex flex-col justify-between group overflow-hidden glow-border">
+              <div className="col-span-2 row-span-2 glass-chrome rounded-[3rem] p-12 flex flex-col justify-between group overflow-hidden glow-border">
                 <div className="relative">
                   <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center mb-10 group-hover:scale-110 transition-transform duration-500">
                     <Command className="h-8 w-8 text-primary" />
@@ -128,7 +128,7 @@ export default function Home() {
               </div>
 
               {/* Secondary Bento Tile */}
-              <div className="md:col-span-2 glass-chrome rounded-[3rem] p-12 flex items-center justify-between group glow-border">
+              <div className="col-span-2 glass-chrome rounded-[3rem] p-12 flex items-center justify-between group glow-border">
                 <div className="max-w-[60%]">
                   <h3 className="text-3xl font-bold mb-4">Neural CRM Sync.</h3>
                   <p className="text-muted-foreground leading-relaxed">
@@ -164,15 +164,15 @@ export default function Home() {
         {/* Audiophile Demo Section */}
         <section id="demo" className="py-32 relative bg-background">
           <div className="container mx-auto px-6">
-            <div className="max-w-6xl mx-auto glass-chrome rounded-[4rem] p-12 lg:p-24 overflow-hidden relative glow-border">
+            <div className="max-w-6xl mx-auto glass-chrome rounded-[4rem] p-24 overflow-hidden relative glow-border">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
-              <div className="grid lg:grid-cols-2 gap-24 items-center relative z-10">
+              <div className="grid grid-cols-2 gap-24 items-center relative z-10">
                 <div>
                   <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 text-green-500 text-[10px] font-black uppercase tracking-widest mb-8">
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping"></div>
                     Live Connection
                   </div>
-                  <h2 className="text-5xl md:text-7xl font-bold mb-8 leading-[0.9]">Experience the <br className="hidden md:block" /> Intelligence.</h2>
+                  <h2 className="text-7xl font-bold mb-8 leading-[0.9]">Experience the <br /> Intelligence.</h2>
                   <p className="text-muted-foreground text-xl leading-relaxed mb-12">
                     Click the interface to engage with a production-grade agent.
                     Observe the latency, tone, and decision-making logic in real-time.
@@ -196,11 +196,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Premium Industries */}
+        {/* Premium Industries - Always 4 columns */}
         <section id="solutions" className="py-32">
-          <div className="container mx-auto px-6 lg:px-12 text-center">
+          <div className="container mx-auto px-12 text-center">
             <h2 className="text-5xl font-bold mb-20">Universal Application.</h2>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-4 gap-8">
               {Object.values(INDUSTRIES).map((industry) => (
                 <Link key={industry.slug} href={`/solutions/${industry.slug}`}>
                   <div className="group relative glass-chrome p-10 rounded-[3rem] hover:bg-white/10 transition-all duration-700 glow-border h-full">
@@ -221,17 +221,17 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Pricing Section - 3 Tiers */}
+        {/* Pricing Section - Always 3 columns */}
         <section id="pricing" className="py-32 relative">
           <div className="container mx-auto px-6">
             <div className="text-center mb-20">
-              <h2 className="text-5xl md:text-6xl font-black tracking-tighter mb-6 uppercase">Choose Your Protocol.</h2>
+              <h2 className="text-6xl font-black tracking-tighter mb-6 uppercase">Choose Your Protocol.</h2>
               <p className="text-xl text-muted-foreground/60 max-w-2xl mx-auto">
                 Scalable voice infrastructure. From solo operators to enterprise fleets.
               </p>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            <div className="grid grid-cols-3 gap-6 max-w-6xl mx-auto">
               {/* Starter Tier */}
               <div className="glass-chrome rounded-[3rem] p-10 flex flex-col glow-border group">
                 <div className="mb-8">
@@ -358,12 +358,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Global Strategy Section */}
+        {/* Global Strategy Section - Always 2 columns */}
         <section id="book" className="py-48 bg-[#0a0a0a]">
           <div className="container mx-auto px-6">
-            <div className="grid lg:grid-cols-2 gap-32 items-center">
+            <div className="grid grid-cols-2 gap-32 items-center">
               <div>
-                <h2 className="text-6xl md:text-8xl font-black tracking-tighter mb-12 uppercase leading-[0.85]">
+                <h2 className="text-8xl font-black tracking-tighter mb-12 uppercase leading-[0.85]">
                   Schedule <br />
                   <span className="opacity-20 hover:opacity-100 transition-opacity">Protocol.</span>
                 </h2>
@@ -388,7 +388,7 @@ export default function Home() {
       </main>
 
       <footer className="py-20 border-t border-white/5 bg-background">
-        <div className="container mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-12 font-bold uppercase tracking-[0.2em] text-[10px] opacity-40">
+        <div className="container mx-auto px-12 flex items-center justify-between gap-12 font-bold uppercase tracking-[0.2em] text-[10px] opacity-40">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5" />
             <span>Apex Voice Solutions V4</span>
