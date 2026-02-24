@@ -1,31 +1,40 @@
+"use client";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, Phone, Activity, CreditCard, MessageSquare } from "lucide-react";
-import db from "@/lib/db";
-import { requireTenant } from "@/lib/auth";
+import { useEffect, useState } from "react";
+import Link from "next/link";
 
-export const dynamic = 'force-dynamic';
+const API_BASE = "https://apex-voice-crm-production.up.railway.app";
 
-export default async function DashboardPage() {
-    const tenant = await requireTenant();
+export default function DashboardPage() {
+    const [stats, setStats] = useState({
+        totalLeads: 0,
+        totalClients: 0,
+        totalCalls: 0,
+        newLeads: 0
+    });
+    const [loading, setLoading] = useState(true);
 
-    // Fetch real metrics
-    const [agentsCount, leadsCount, callsCount, recentLeads] = await Promise.all([
-        db.agent.count({ where: { tenantId: tenant.id } }),
-        db.lead.count({ where: { tenantId: tenant.id } }),
-        db.callLog.count({
-            where: {
-                OR: [
-                    { agent: { tenantId: tenant.id } },
-                    { lead: { tenantId: tenant.id } }
-                ]
+    useEffect(() => {
+        async function fetchStats() {
+            try {
+                const res = await fetch(`${API_BASE}/api/stats`);
+                const data = await res.json();
+                setStats({
+                    totalLeads: data.totalLeads || 0,
+                    totalClients: data.totalClients || 0,
+                    totalCalls: data.totalCalls || 0,
+                    newLeads: data.newLeads || 0
+                });
+            } catch (error) {
+                console.error("Failed to fetch stats:", error);
+            } finally {
+                setLoading(false);
             }
-        }),
-        db.lead.findMany({
-            where: { tenantId: tenant.id },
-            orderBy: { createdAt: 'desc' },
-            take: 5
-        })
-    ]);
+        }
+        fetchStats();
+    }, []);
 
     return (
         <div className="space-y-6">
@@ -34,14 +43,16 @@ export default async function DashboardPage() {
                 <Card>
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">
-                            Total Agents
+                            Total Clients
                         </CardTitle>
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{agentsCount}</div>
+                        <div className="text-2xl font-bold">
+                            {loading ? "..." : stats.totalClients}
+                        </div>
                         <p className="text-xs text-muted-foreground">
-                            Configure in Agents tab
+                            AI receptionists deployed
                         </p>
                     </CardContent>
                 </Card>
@@ -53,7 +64,9 @@ export default async function DashboardPage() {
                         <Phone className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{callsCount}</div>
+                        <div className="text-2xl font-bold">
+                            {loading ? "..." : stats.totalCalls}
+                        </div>
                         <p className="text-xs text-muted-foreground">
                             Processed by AI agents
                         </p>
@@ -81,7 +94,9 @@ export default async function DashboardPage() {
                         <CreditCard className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
                     <CardContent>
-                        <div className="text-2xl font-bold">{leadsCount}</div>
+                        <div className="text-2xl font-bold">
+                            {loading ? "..." : stats.totalLeads}
+                        </div>
                         <p className="text-xs text-muted-foreground">
                             Syncing to CRM
                         </p>
@@ -91,28 +106,11 @@ export default async function DashboardPage() {
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
                 <Card className="col-span-4">
                     <CardHeader>
-                        <CardTitle>Recent Leads</CardTitle>
+                        <CardTitle>Quick Overview</CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <div className="space-y-8">
-                            {recentLeads.map((lead) => (
-                                <div key={lead.id} className="flex items-center">
-                                    <div className="space-y-1">
-                                        <p className="text-sm font-medium leading-none">
-                                            {lead.firstName} {lead.lastName}
-                                        </p>
-                                        <p className="text-sm text-muted-foreground">
-                                            {lead.email}
-                                        </p>
-                                    </div>
-                                    <div className="ml-auto font-medium">
-                                        {lead.status}
-                                    </div>
-                                </div>
-                            ))}
-                            {recentLeads.length === 0 && (
-                                <div className="text-sm text-muted-foreground">No recent leads.</div>
-                            )}
+                        <div className="text-sm text-muted-foreground">
+                            Your AI Voice operations are running smoothly. Check the Leads and Agents tabs to manage your voice receptionists.
                         </div>
                     </CardContent>
                 </Card>
@@ -125,12 +123,16 @@ export default async function DashboardPage() {
                             Get started with your AI Voice operations.
                         </div>
                         <div className="grid gap-2">
-                            <button className="flex items-center gap-2 p-2 rounded-md hover:bg-muted text-sm border transition-colors w-full text-left">
-                                <Users className="h-4 w-4" /> Create New Agent
-                            </button>
-                            <button className="flex items-center gap-2 p-2 rounded-md hover:bg-muted text-sm border transition-colors w-full text-left">
-                                <MessageSquare className="h-4 w-4" /> Build Workflow
-                            </button>
+                            <Link href="/dashboard/agents">
+                                <button className="flex items-center gap-2 p-2 rounded-md hover:bg-muted text-sm border transition-colors w-full text-left">
+                                    <Users className="h-4 w-4" /> View Agents
+                                </button>
+                            </Link>
+                            <Link href="/dashboard/leads">
+                                <button className="flex items-center gap-2 p-2 rounded-md hover:bg-muted text-sm border transition-colors w-full text-left">
+                                    <MessageSquare className="h-4 w-4" /> View Leads
+                                </button>
+                            </Link>
                         </div>
                     </CardContent>
                 </Card>
