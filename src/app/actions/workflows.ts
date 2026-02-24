@@ -1,33 +1,44 @@
 "use server";
 
-import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { requireTenant } from "@/lib/auth";
+
+// Workflows are stored in memory for now
+// TODO: Add workflows table to Railway backend
+
+const mockWorkflows: any[] = [];
+
+export async function getWorkflows() {
+    return mockWorkflows;
+}
+
+export async function getWorkflow(id: string) {
+    return mockWorkflows.find(w => w.id === id) || null;
+}
 
 export async function saveWorkflow(id: string, data: any) {
-    const tenant = await requireTenant();
     const nodes = JSON.stringify(data.nodes);
     const edges = JSON.stringify(data.edges);
 
     if (id === 'new') {
-        const newWorkflow = await db.workflow.create({
-            data: {
-                name: "New Workflow",
-                trigger: "INCOMING_CALL",
-                nodes,
-                edges,
-                tenantId: tenant.id
-            }
-        });
+        const newWorkflow = {
+            id: `workflow_${Date.now()}`,
+            name: "New Workflow",
+            trigger: "INCOMING_CALL",
+            nodes,
+            edges,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+        };
+        mockWorkflows.push(newWorkflow);
+        revalidatePath("/dashboard/workflows");
         return { success: true, id: newWorkflow.id };
     } else {
-        await db.workflow.update({
-            where: { id, tenantId: tenant.id },
-            data: {
-                nodes,
-                edges
-            }
-        });
+        const workflow = mockWorkflows.find(w => w.id === id);
+        if (workflow) {
+            workflow.nodes = nodes;
+            workflow.edges = edges;
+            workflow.updatedAt = new Date().toISOString();
+        }
     }
 
     revalidatePath("/dashboard/workflows");

@@ -1,6 +1,5 @@
-export const dynamic = 'force-dynamic';
+"use client";
 
-import { getCallLogs } from "@/app/actions/logs";
 import {
     Table,
     TableBody,
@@ -12,9 +11,28 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Phone, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 
-export default async function CallLogsPage() {
-    const logs = await getCallLogs();
+const API_BASE = "https://apex-voice-crm-production.up.railway.app";
+
+export default function CallLogsPage() {
+    const [logs, setLogs] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchLogs() {
+            try {
+                const res = await fetch(`${API_BASE}/api/calls`);
+                const data = await res.json();
+                setLogs(data.calls || []);
+            } catch (error) {
+                console.error("Failed to fetch logs:", error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchLogs();
+    }, []);
 
     return (
         <div className="space-y-6">
@@ -25,44 +43,43 @@ export default async function CallLogsPage() {
                     <TableHeader>
                         <TableRow>
                             <TableHead>Date</TableHead>
-                            <TableHead>Direction</TableHead>
-                            <TableHead>Agent</TableHead>
-                            <TableHead>Lead</TableHead>
+                            <TableHead>Phone</TableHead>
                             <TableHead>Status</TableHead>
                             <TableHead>Duration</TableHead>
                             <TableHead className="text-right">Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                        {logs.map((log) => (
-                            <TableRow key={log.id}>
-                                <TableCell>{log.createdAt.toLocaleString()}</TableCell>
-                                <TableCell>
-                                    <Badge variant="outline">{log.direction}</Badge>
-                                </TableCell>
-                                <TableCell>{log.agent?.name || "Unknown"}</TableCell>
-                                <TableCell>
-                                    {log.lead ? `${log.lead.firstName} ${log.lead.lastName}` : "Unknown"}
-                                </TableCell>
-                                <TableCell>
-                                    <Badge variant={log.status === "COMPLETED" ? "default" : "destructive"}>
-                                        {log.status}
-                                    </Badge>
-                                </TableCell>
-                                <TableCell>{log.duration}s</TableCell>
-                                <TableCell className="text-right">
-                                    <Button variant="ghost" size="sm">
-                                        <Play className="h-4 w-4 mr-1" /> Play
-                                    </Button>
+                        {loading ? (
+                            <TableRow>
+                                <TableCell colSpan={5} className="h-24 text-center">
+                                    Loading...
                                 </TableCell>
                             </TableRow>
-                        ))}
-                        {logs.length === 0 && (
+                        ) : logs.length === 0 ? (
                             <TableRow>
-                                <TableCell colSpan={7} className="h-24 text-center">
+                                <TableCell colSpan={5} className="h-24 text-center">
                                     No calls recorded yet.
                                 </TableCell>
                             </TableRow>
+                        ) : (
+                            logs.map((log) => (
+                                <TableRow key={log.id}>
+                                    <TableCell>{log.created_at || "N/A"}</TableCell>
+                                    <TableCell>{log.phone_number || log.lead_phone || "N/A"}</TableCell>
+                                    <TableCell>
+                                        <Badge variant={log.status === "completed" ? "default" : "destructive"}>
+                                            {log.status || "completed"}
+                                        </Badge>
+                                    </TableCell>
+                                    <TableCell>{log.duration || 0}s</TableCell>
+                                    <TableCell className="text-right">
+                                        <Button variant="ghost" size="sm">
+                                            <Play className="h-4 w-4 mr-1" /> Play
+                                        </Button>
+                                    </TableCell>
+                                </TableRow>
+                            ))
                         )}
                     </TableBody>
                 </Table>

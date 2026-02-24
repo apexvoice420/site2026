@@ -1,28 +1,21 @@
 "use server";
 
-import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { requireTenant } from "@/lib/auth";
 
+// Settings are stored in environment variables, not editable from UI
 export async function getSettings() {
-    const tenant = await requireTenant();
-    return tenant;
+    return {
+        id: "default",
+        name: "Apex Voice Solutions",
+        vapiKey: process.env.VAPI_API_KEY ? "✓ Configured" : "Not Set",
+        phoneNumber: "+13862825413",
+        industry: "AI Voice Solutions"
+    };
 }
 
 export async function updateSettings(formData: FormData) {
-    const tenant = await requireTenant();
-    const vapiKey = formData.get("vapiKey") as string;
-    const phoneNumber = formData.get("phoneNumber") as string;
-    const industry = formData.get("industry") as string;
-
-    await db.tenant.update({
-        where: { id: tenant.id },
-        data: {
-            vapiKey,
-            phoneNumber,
-            industry
-        }
-    });
-
+    // Settings updates would need to go through environment variables
+    // For now, this is a no-op
+    console.log("Settings update requested:", Object.fromEntries(formData));
     revalidatePath("/dashboard/settings");
 }

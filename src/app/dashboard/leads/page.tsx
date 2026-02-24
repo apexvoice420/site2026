@@ -1,6 +1,5 @@
-export const dynamic = 'force-dynamic';
+"use client";
 
-import { getLeads, createLead } from "@/app/actions/leads";
 import { Button } from "@/components/ui/button";
 import {
     Table,
@@ -20,18 +19,83 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Search } from "lucide-react";
+import { Plus, Search, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { useEffect, useState } from "react";
 
-export default async function LeadsPage() {
-    const leads = await getLeads();
+const API_BASE = "https://apex-voice-crm-production.up.railway.app";
+
+interface Lead {
+    id: number;
+    business_name: string;
+    phone: string;
+    email: string;
+    city: string;
+    state: string;
+    rating: number;
+    status: string;
+    source: string;
+    created_at: string;
+}
+
+export default function LeadsPage() {
+    const [leads, setLeads] = useState<Lead[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [formData, setFormData] = useState({
+        businessName: "",
+        phone: "",
+        email: "",
+        city: "",
+        state: ""
+    });
+
+    useEffect(() => {
+        fetchLeads();
+    }, []);
+
+    async function fetchLeads() {
+        try {
+            const res = await fetch(`${API_BASE}/api/leads`);
+            const data = await res.json();
+            setLeads(data.leads || data || []);
+        } catch (error) {
+            console.error("Failed to fetch leads:", error);
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    async function handleCreateLead(e: React.FormEvent) {
+        e.preventDefault();
+        try {
+            await fetch(`${API_BASE}/api/leads`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    leads: [{
+                        businessName: formData.businessName,
+                        phone: formData.phone,
+                        email: formData.email,
+                        city: formData.city,
+                        state: formData.state
+                    }]
+                })
+            });
+            setDialogOpen(false);
+            setFormData({ businessName: "", phone: "", email: "", city: "", state: "" });
+            fetchLeads();
+        } catch (error) {
+            console.error("Failed to create lead:", error);
+        }
+    }
 
     return (
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <h2 className="text-3xl font-bold tracking-tight">Leads & CRM</h2>
-                <Dialog>
+                <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                     <DialogTrigger asChild>
                         <Button>
                             <Plus className="mr-2 h-4 w-4" /> Add Lead
@@ -41,25 +105,52 @@ export default async function LeadsPage() {
                         <DialogHeader>
                             <DialogTitle>Add New Lead</DialogTitle>
                         </DialogHeader>
-                        <form action={createLead}>
+                        <form onSubmit={handleCreateLead}>
                             <div className="grid gap-4 py-4">
+                                <div className="space-y-2">
+                                    <Label htmlFor="businessName">Business Name</Label>
+                                    <Input 
+                                        id="businessName" 
+                                        value={formData.businessName}
+                                        onChange={(e) => setFormData({...formData, businessName: e.target.value})}
+                                    />
+                                </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="space-y-2">
-                                        <Label htmlFor="firstName">First Name</Label>
-                                        <Input id="firstName" name="firstName" />
+                                        <Label htmlFor="email">Email</Label>
+                                        <Input 
+                                            id="email" 
+                                            type="email"
+                                            value={formData.email}
+                                            onChange={(e) => setFormData({...formData, email: e.target.value})}
+                                        />
                                     </div>
                                     <div className="space-y-2">
-                                        <Label htmlFor="lastName">Last Name</Label>
-                                        <Input id="lastName" name="lastName" />
+                                        <Label htmlFor="phone">Phone</Label>
+                                        <Input 
+                                            id="phone" 
+                                            value={formData.phone}
+                                            onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                                        />
                                     </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input id="email" name="email" type="email" />
-                                </div>
-                                <div className="space-y-2">
-                                    <Label htmlFor="phone">Phone</Label>
-                                    <Input id="phone" name="phone" />
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="space-y-2">
+                                        <Label htmlFor="city">City</Label>
+                                        <Input 
+                                            id="city" 
+                                            value={formData.city}
+                                            onChange={(e) => setFormData({...formData, city: e.target.value})}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="state">State</Label>
+                                        <Input 
+                                            id="state" 
+                                            value={formData.state}
+                                            onChange={(e) => setFormData({...formData, state: e.target.value})}
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <DialogFooter>
@@ -81,48 +172,48 @@ export default async function LeadsPage() {
                 </div>
             </div>
 
-            <div className="rounded-md border">
-                <Table>
-                    <TableHeader>
-                        <TableRow>
-                            <TableHead>Name</TableHead>
-                            <TableHead>Status</TableHead>
-                            <TableHead>Phone</TableHead>
-                            <TableHead>Created</TableHead>
-                            <TableHead className="text-right">Actions</TableHead>
-                        </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                        {leads.map((lead) => (
-                            <TableRow key={lead.id}>
-                                <TableCell className="font-medium">
-                                    <Link href={`/dashboard/leads/${lead.id}`} className="hover:underline">
-                                        {lead.firstName} {lead.lastName}
-                                    </Link>
-                                    <div className="text-xs text-muted-foreground">{lead.email}</div>
-                                </TableCell>
-                                <TableCell>
-                                    <Badge variant="secondary">{lead.status}</Badge>
-                                </TableCell>
-                                <TableCell>{lead.phone}</TableCell>
-                                <TableCell>{lead.createdAt.toLocaleDateString()}</TableCell>
-                                <TableCell className="text-right">
-                                    <Link href={`/dashboard/leads/${lead.id}`}>
-                                        <Button variant="ghost" size="sm">View</Button>
-                                    </Link>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                        {leads.length === 0 && (
+            {loading ? (
+                <div className="flex items-center justify-center h-64">
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+            ) : (
+                <div className="rounded-md border">
+                    <Table>
+                        <TableHeader>
                             <TableRow>
-                                <TableCell colSpan={5} className="h-24 text-center">
-                                    No results.
-                                </TableCell>
+                                <TableHead>Business</TableHead>
+                                <TableHead>Status</TableHead>
+                                <TableHead>Phone</TableHead>
+                                <TableHead>City</TableHead>
+                                <TableHead>Rating</TableHead>
                             </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
-            </div>
+                        </TableHeader>
+                        <TableBody>
+                            {leads.map((lead) => (
+                                <TableRow key={lead.id}>
+                                    <TableCell className="font-medium">
+                                        {lead.business_name}
+                                        <div className="text-xs text-muted-foreground">{lead.email}</div>
+                                    </TableCell>
+                                    <TableCell>
+                                        <Badge variant="secondary">{lead.status || "New"}</Badge>
+                                    </TableCell>
+                                    <TableCell>{lead.phone}</TableCell>
+                                    <TableCell>{lead.city}, {lead.state}</TableCell>
+                                    <TableCell>{lead.rating ? `${lead.rating}★` : "-"}</TableCell>
+                                </TableRow>
+                            ))}
+                            {leads.length === 0 && (
+                                <TableRow>
+                                    <TableCell colSpan={5} className="h-24 text-center">
+                                        No leads yet. Add your first lead above.
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
+            )}
         </div>
     );
 }

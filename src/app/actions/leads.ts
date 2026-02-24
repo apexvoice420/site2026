@@ -1,49 +1,56 @@
 "use server";
 
-import { triggerWorkflow } from "@/services/workflow-engine";
-import db from "@/lib/db";
 import { revalidatePath } from "next/cache";
-import { requireTenant } from "@/lib/auth";
+
+const API_BASE = "https://apex-voice-crm-production.up.railway.app";
 
 export async function createLead(formData: FormData) {
-    const tenant = await requireTenant();
     const firstName = formData.get("firstName") as string;
     const lastName = formData.get("lastName") as string;
     const email = formData.get("email") as string;
     const phone = formData.get("phone") as string;
 
-    const lead = await db.lead.create({
-        data: {
-            firstName,
-            lastName,
-            email,
-            phone,
-            tenantId: tenant.id,
-            status: "NEW",
-            tags: "",
-            customData: "{}"
-        }
-    });
-
-    // Trigger Workflow
-    await triggerWorkflow("LEAD_CREATED", { lead });
+    try {
+        const res = await fetch(`${API_BASE}/api/leads`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                leads: [{
+                    businessName: `${firstName} ${lastName}`,
+                    email,
+                    phone
+                }]
+            })
+        });
+        
+        if (!res.ok) throw new Error("Failed to create lead");
+    } catch (error) {
+        console.error("Create lead error:", error);
+    }
 
     revalidatePath("/dashboard/leads");
 }
 
 export async function getLead(leadId: string) {
-    const tenant = await requireTenant();
-    return await db.lead.findUnique({
-        where: { id: leadId, tenantId: tenant.id },
-        include: {
-            calls: true
-        }
-    });
+    try {
+        const res = await fetch(`${API_BASE}/api/leads/${leadId}`);
+        if (!res.ok) return null;
+        const data = await res.json();
+        return data.lead || data;
+    } catch (error) {
+        console.error("Get lead error:", error);
+        return null;
+    }
 }
+
 export async function getLeads() {
-    const tenant = await requireTenant();
-    return await db.lead.findMany({
-        where: { tenantId: tenant.id },
-        orderBy: { createdAt: "desc" }
-    });
+    try {
+        const res = await fetch(`${API_BASE}/api/leads`);
+        if (!res.ok) return [];
+        const data = await res.json();
+        return data.leads || [];
+    } catch (error) {
+        console.error("Get leads error:", error);
+        return [];
+    }
 }

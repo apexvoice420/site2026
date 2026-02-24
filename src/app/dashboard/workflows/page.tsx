@@ -2,13 +2,9 @@ export const dynamic = 'force-dynamic';
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import db from "@/lib/db";
+import { getWorkflows } from "@/app/actions/workflows";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Plus, Workflow } from "lucide-react";
-
-async function getWorkflows() {
-    return await db.workflow.findMany({ orderBy: { updatedAt: 'desc' } });
-}
 
 export default async function WorkflowsLayoutPage() {
     const workflows = await getWorkflows();
@@ -25,7 +21,7 @@ export default async function WorkflowsLayoutPage() {
             </div>
 
             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-                {workflows.map((wf) => (
+                {workflows.map((wf: any) => (
                     <Link key={wf.id} href={`/dashboard/workflows/${wf.id}`}>
                         <Card className="hover:bg-muted/50 transition-colors cursor-pointer">
                             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -42,7 +38,7 @@ export default async function WorkflowsLayoutPage() {
                 ))}
                 {workflows.length === 0 && (
                     <div className="col-span-3 text-center py-10 text-muted-foreground">
-                        No workflows found.
+                        No workflows found. Create your first workflow to get started.
                     </div>
                 )}
             </div>
