@@ -23,7 +23,7 @@ import { BookingCalendar } from "@/components/BookingCalendar";
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20 transition-colors duration-1000 font-sans">
-      {/* Ultra-Premium Navigation - Always show desktop layout */}
+      {/* Ultra-Premium Navigation - Fixed Desktop Layout */}
       <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/50 backdrop-blur-2xl">
         <div className="container mx-auto flex h-20 items-center justify-between px-12">
           <div className="flex items-center gap-3">
@@ -56,12 +56,11 @@ export default function Home() {
       </header>
 
       <main className="flex-1">
-        {/* V4 Hero - Status: Active */}
+        {/* V4 Hero - Fixed Desktop Layout */}
         <section className="relative pt-48 pb-64 overflow-hidden">
-          {/* Ambient Lighting */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-primary/5 blur-[160px] rounded-full -z-10"></div>
 
-          <div className="container mx-auto px-6 text-center">
+          <div className="container mx-auto px-12 text-center">
             <div className="perspective-1000 inline-block mb-12">
               <div className="preserve-3d animate-in fade-in slide-in-from-bottom-8 duration-1000">
                 <div className="glass-chrome px-5 py-2 rounded-full text-[11px] font-bold uppercase tracking-[0.3em] flex items-center gap-3 border-white/10 shadow-2xl">
@@ -73,12 +72,12 @@ export default function Home() {
               </div>
             </div>
 
-            <h1 className="text-[140px] font-black tracking-[-0.04em] leading-[0.85] mb-12 animate-in fade-in zoom-in-95 duration-1000 delay-200">
+            <h1 className="text-7xl font-black tracking-[-0.04em] leading-[0.85] mb-12 animate-in fade-in zoom-in-95 duration-1000 delay-200">
               ELIMINATE THE <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-b from-foreground to-foreground/30">MISSED CALL.</span>
             </h1>
 
-            <p className="max-w-[800px] mx-auto text-2xl text-muted-foreground/80 font-medium leading-relaxed mb-16 px-4 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500 text-pretty">
+            <p className="max-w-[800px] mx-auto text-2xl text-muted-foreground/80 font-medium leading-relaxed mb-16 animate-in fade-in slide-in-from-bottom-12 duration-1000 delay-500 text-pretty">
               Advanced voice-native intelligence that captures, qualifies, and <br />
               synchronizes every opportunity while you sleep.
             </p>
@@ -99,7 +98,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Bento Grid Features - Always 4 columns */}
+        {/* Bento Grid Features - Fixed 4 Column Grid */}
         <section id="features" className="py-32 relative">
           <div className="container mx-auto px-12">
             <div className="grid grid-cols-4 grid-rows-2 gap-6 h-[800px]">
@@ -161,9 +160,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Audiophile Demo Section */}
+        {/* Audiophile Demo Section - Fixed 2 Column */}
         <section id="demo" className="py-32 relative bg-background">
-          <div className="container mx-auto px-6">
+          <div className="container mx-auto px-12">
             <div className="max-w-6xl mx-auto glass-chrome rounded-[4rem] p-24 overflow-hidden relative glow-border">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent pointer-events-none"></div>
               <div className="grid grid-cols-2 gap-24 items-center relative z-10">
@@ -172,7 +171,7 @@ export default function Home() {
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-ping"></div>
                     Live Connection
                   </div>
-                  <h2 className="text-7xl font-bold mb-8 leading-[0.9]">Experience the <br /> Intelligence.</h2>
+                  <h2 className="text-5xl font-bold mb-8 leading-[0.9]">Experience the <br /> Intelligence.</h2>
                   <p className="text-muted-foreground text-xl leading-relaxed mb-12">
                     Click the interface to engage with a production-grade agent.
                     Observe the latency, tone, and decision-making logic in real-time.
@@ -196,7 +195,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Premium Industries - Always 4 columns */}
+        {/* Premium Industries - Fixed 4 Columns */}
         <section id="solutions" className="py-32">
           <div className="container mx-auto px-12 text-center">
             <h2 className="text-5xl font-bold mb-20">Universal Application.</h2>
@@ -221,9 +220,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Pricing Section - Always 3 columns */}
+        {/* Pricing Section - Fixed 3 Columns */}
         <section id="pricing" className="py-32 relative">
-          <div className="container mx-auto px-6">
+          <div className="container mx-auto px-12">
             <div className="text-center mb-20">
               <h2 className="text-6xl font-black tracking-tighter mb-6 uppercase">Choose Your Protocol.</h2>
               <p className="text-xl text-muted-foreground/60 max-w-2xl mx-auto">
@@ -358,9 +357,9 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Global Strategy Section - Always 2 columns */}
+        {/* Global Strategy Section - Fixed 2 Columns */}
         <section id="book" className="py-48 bg-[#0a0a0a]">
-          <div className="container mx-auto px-6">
+          <div className="container mx-auto px-12">
             <div className="grid grid-cols-2 gap-32 items-center">
               <div>
                 <h2 className="text-8xl font-black tracking-tighter mb-12 uppercase leading-[0.85]">
