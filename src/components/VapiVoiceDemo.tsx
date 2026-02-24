@@ -1,91 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Bot, Phone, PhoneOff, Activity, ShieldCheck, Zap } from "lucide-react";
-
-// VAPI Public Key and Assistant ID
-const VAPI_PUBLIC_KEY = "140ada0a-5ae8-47f8-bc9f-5c912f339258";
-const DEMO_ASSISTANT_ID = "77a64bc3-9fbc-4edd-ae80-8e3987e2b492"; // Apex Demo AI Receptionist
-
-// Dynamic import for Vapi (client-side only)
-let VapiClass: typeof import("@vapi-ai/web").default | null = null;
+import { Bot, Phone, PhoneOff, Activity, ShieldCheck, Zap, Mic } from "lucide-react";
 
 export function VapiVoiceDemo() {
-  const [isLoaded, setIsLoaded] = useState(false);
   const [isCalling, setIsCalling] = useState(false);
-  const [status, setStatus] = useState("Standby");
-  const vapiRef = useRef<InstanceType<typeof import("@vapi-ai/web").default> | null>(null);
-
-  useEffect(() => {
-    // Dynamically import Vapi on client side
-    import("@vapi-ai/web")
-      .then((module) => {
-        VapiClass = module.default;
-        setIsLoaded(true);
-        console.log("VAPI SDK loaded successfully");
-      })
-      .catch((err) => {
-        console.error("Failed to load VAPI SDK:", err);
-        setStatus("SDK Load Error");
-      });
-  }, []);
-
-  const startCall = () => {
-    if (!VapiClass) {
-      console.error("VAPI SDK not loaded");
-      setStatus("SDK Not Ready");
-      return;
-    }
-
-    try {
-      setStatus("Connecting...");
-      
-      const vapi = new VapiClass(VAPI_PUBLIC_KEY);
-      vapiRef.current = vapi;
-
-      vapi.on("call-start", () => {
-        console.log("Call started");
-        setIsCalling(true);
-        setStatus("Active Feed");
-      });
-
-      vapi.on("call-end", () => {
-        console.log("Call ended");
-        setIsCalling(false);
-        setStatus("Standby");
-        vapiRef.current = null;
-      });
-
-      vapi.on("error", (err: unknown) => {
-        console.error("VAPI error:", err);
-        setStatus("Connection Error");
-        setIsCalling(false);
-      });
-
-      vapi.start(DEMO_ASSISTANT_ID);
-    } catch (err) {
-      console.error("Failed to start call:", err);
-      setStatus("Failed to Connect");
-    }
-  };
-
-  const endCall = () => {
-    if (vapiRef.current) {
-      vapiRef.current.stop();
-      setIsCalling(false);
-      setStatus("Standby");
-      vapiRef.current = null;
-    }
-  };
-
-  useEffect(() => {
-    return () => {
-      if (vapiRef.current) {
-        vapiRef.current.stop();
-      }
-    };
-  }, []);
 
   return (
     <div className="w-full max-w-sm glass-chrome rounded-[2.5rem] p-10 flex flex-col items-center gap-10 glow-border relative overflow-hidden group">
@@ -104,38 +24,46 @@ export function VapiVoiceDemo() {
       <div className="text-center space-y-2">
         <div className="text-[10px] uppercase font-black tracking-[0.5em] opacity-40">System Protocol</div>
         <div className={`text-2xl font-bold tracking-tighter transition-colors ${isCalling ? "text-primary" : "text-foreground"}`}>
-          {status}
+          {isCalling ? "Active Feed" : "Standby"}
         </div>
       </div>
 
-      <div className="flex gap-4 w-full">
-        <Button
-          size="lg"
-          onClick={isCalling ? endCall : startCall}
-          disabled={!isLoaded}
-          className={`flex-1 h-16 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all shadow-2xl ${isCalling ? "bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20" : "bg-primary text-primary-foreground hover:scale-[1.02] shadow-primary/20"}`}
-        >
-          {isCalling ? (
-            <>
-              <PhoneOff className="mr-3 h-5 w-5" /> Disconnect
-            </>
-          ) : (
-            <>
-              <Phone className="mr-3 h-5 w-5" /> Initialize
-            </>
-          )}
-        </Button>
-      </div>
+      {isCalling ? (
+        <div className="w-full space-y-4 text-center">
+          <div className="glass-chrome rounded-2xl p-6 space-y-3">
+            <Mic className="h-8 w-8 text-primary mx-auto animate-pulse" />
+            <p className="text-sm font-medium">Demo Line Active</p>
+            <p className="text-2xl font-bold tracking-tight">+1 (386) 282-5413</p>
+            <p className="text-xs text-muted-foreground">Speak with our AI receptionist</p>
+          </div>
+          <Button
+            size="lg"
+            onClick={() => setIsCalling(false)}
+            className="flex-1 h-16 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all shadow-2xl bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20 w-full"
+          >
+            <PhoneOff className="mr-3 h-5 w-5" /> End Session
+          </Button>
+        </div>
+      ) : (
+        <div className="w-full space-y-4">
+          <Button
+            size="lg"
+            onClick={() => setIsCalling(true)}
+            className="flex-1 h-16 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all shadow-2xl bg-primary text-primary-foreground hover:scale-[1.02] shadow-primary/20 w-full"
+          >
+            <Phone className="mr-3 h-5 w-5" /> Initialize
+          </Button>
+          <p className="text-[10px] text-muted-foreground/60 text-center">
+            Click to reveal demo phone number
+          </p>
+        </div>
+      )}
 
       <div className="w-full flex justify-between px-2 opacity-20 group-hover:opacity-60 transition-opacity">
         <Zap className="h-4 w-4" />
         <Activity className="h-4 w-4" />
         <ShieldCheck className="h-4 w-4" />
       </div>
-
-      {!isLoaded && (
-        <div className="text-[10px] text-muted-foreground/40">Loading voice SDK...</div>
-      )}
     </div>
   );
 }
