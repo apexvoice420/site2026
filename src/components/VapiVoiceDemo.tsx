@@ -3,64 +3,23 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Bot, Phone, PhoneOff, Activity, ShieldCheck, Zap } from "lucide-react";
-
-declare global {
-  interface Window {
-    Vapi: new (apiKey: string) => VapiInstance;
-  }
-}
-
-interface VapiInstance {
-  start: (assistantId: string) => void;
-  stop: () => void;
-  on: (event: string, callback: (data?: unknown) => void) => void;
-  off: (event: string, callback: (data?: unknown) => void) => void;
-}
+import Vapi from "@vapi-ai/web";
 
 // VAPI Public Key and Assistant ID
 const VAPI_PUBLIC_KEY = "140ada0a-5ae8-47f8-bc9f-5c912f339258";
 const DEMO_ASSISTANT_ID = "77a64bc3-9fbc-4edd-ae80-8e3987e2b492"; // Apex Demo AI Receptionist
 
 export function VapiVoiceDemo() {
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(true);
   const [isCalling, setIsCalling] = useState(false);
   const [status, setStatus] = useState("Standby");
-  const vapiRef = useRef<VapiInstance | null>(null);
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    // Correct CDN path for @vapi-ai/web
-    script.src = "https://cdn.jsdelivr.net/npm/@vapi-ai/web@2.5.2/dist/vapi.js";
-    script.async = true;
-    script.onload = () => {
-      console.log("VAPI SDK loaded successfully");
-      setIsLoaded(true);
-    };
-    script.onerror = () => {
-      console.error("Failed to load VAPI SDK");
-      setStatus("SDK Load Error");
-    };
-    document.body.appendChild(script);
-
-    return () => {
-      if (vapiRef.current) {
-        vapiRef.current.stop();
-      }
-      try { document.body.removeChild(script); } catch {}
-    };
-  }, []);
+  const vapiRef = useRef<Vapi | null>(null);
 
   const startCall = () => {
-    if (!window.Vapi) {
-      console.error("VAPI SDK not loaded");
-      setStatus("SDK Not Ready");
-      return;
-    }
-
     try {
       setStatus("Connecting...");
       
-      const vapi = new window.Vapi(VAPI_PUBLIC_KEY);
+      const vapi = new Vapi(VAPI_PUBLIC_KEY);
       vapiRef.current = vapi;
 
       vapi.on("call-start", () => {
@@ -76,7 +35,7 @@ export function VapiVoiceDemo() {
         vapiRef.current = null;
       });
 
-      vapi.on("error", (err) => {
+      vapi.on("error", (err: unknown) => {
         console.error("VAPI error:", err);
         setStatus("Connection Error");
         setIsCalling(false);
@@ -97,6 +56,14 @@ export function VapiVoiceDemo() {
       vapiRef.current = null;
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (vapiRef.current) {
+        vapiRef.current.stop();
+      }
+    };
+  }, []);
 
   return (
     <div className="w-full max-w-sm glass-chrome rounded-[2.5rem] p-10 flex flex-col items-center gap-10 glow-border relative overflow-hidden group">
@@ -123,7 +90,6 @@ export function VapiVoiceDemo() {
         <Button
           size="lg"
           onClick={isCalling ? endCall : startCall}
-          disabled={!isLoaded}
           className={`flex-1 h-16 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all shadow-2xl ${isCalling ? "bg-red-500/10 border border-red-500/20 text-red-500 hover:bg-red-500/20" : "bg-primary text-primary-foreground hover:scale-[1.02] shadow-primary/20"}`}
         >
           {isCalling ? (
@@ -143,10 +109,6 @@ export function VapiVoiceDemo() {
         <Activity className="h-4 w-4" />
         <ShieldCheck className="h-4 w-4" />
       </div>
-
-      {!isLoaded && (
-        <div className="text-[10px] text-muted-foreground/40">Loading voice SDK...</div>
-      )}
     </div>
   );
 }
