@@ -33,8 +33,10 @@ export function VapiVoiceDemo() {
           <div className="glass-chrome rounded-2xl p-6 space-y-3">
             <Mic className="h-8 w-8 text-primary mx-auto animate-pulse" />
             <p className="text-sm font-medium">Demo Line Active</p>
-            <p className="text-2xl font-bold tracking-tight">+1 (386) 282-5413</p>
-            <p className="text-xs text-muted-foreground">Speak with our AI receptionist</p>
+            <a href="tel:+13862825413" className="text-2xl font-bold tracking-tight hover:text-primary transition-colors">
+              +1 (386) 282-5413
+            </a>
+            <p className="text-xs text-muted-foreground">Click to call our AI receptionist</p>
           </div>
           <Button
             size="lg"
