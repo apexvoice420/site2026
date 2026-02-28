@@ -21,6 +21,8 @@ import {
 import { INDUSTRIES } from "@/lib/industries";
 import { VapiVoiceDemo } from "@/components/VapiVoiceDemo";
 import { BookingCalendar } from "@/components/BookingCalendar";
+import { MissedCallsCalculator } from "@/components/MissedCallsCalculator";
+import { PricingTiers } from "@/components/PricingTiers";
 import { useState } from "react";
 
 export default function Home() {
@@ -253,87 +255,11 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Pricing - Mobile Stacked */}
-        <section id="pricing" className="py-16 md:py-32 relative">
-          <div className="container mx-auto px-4 md:px-12">
-            <div className="text-center mb-12 md:mb-20">
-              <h2 className="text-3xl md:text-6xl font-black tracking-tighter mb-4 md:mb-6 uppercase">Choose Your Protocol.</h2>
-              <p className="text-base md:text-xl text-muted-foreground/60 max-w-2xl mx-auto">
-                Scalable voice infrastructure. From solo operators to enterprise fleets.
-              </p>
-            </div>
+        {/* Pricing - New 4-Tier System */}
+        <PricingTiers />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
-              {/* Starter Tier */}
-              <div className="glass-chrome rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 flex flex-col glow-border group">
-                <div className="mb-6 md:mb-8">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground/60">Starter</span>
-                  <div className="mt-4 flex items-baseline gap-1">
-                    <span className="text-3xl md:text-4xl font-black">$97</span>
-                    <span className="text-sm opacity-40">/activation</span>
-                  </div>
-                  <p className="mt-4 text-sm text-muted-foreground/70">Perfect for solo operators testing the waters.</p>
-                </div>
-                <ul className="space-y-3 md:space-y-4 mb-8 md:mb-10 flex-1 text-sm">
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>1 AI Voice Agent</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>500 minutes/month</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>Basic CRM integration</span></li>
-                  <li className="flex items-center gap-3 opacity-40"><CheckCircle className="h-4 w-4 shrink-0" /><span>Email support</span></li>
-                </ul>
-                <Link href="#book">
-                  <Button variant="outline" className="w-full h-14 rounded-2xl text-sm font-bold uppercase tracking-wider">Get Started</Button>
-                </Link>
-              </div>
-
-              {/* Professional Tier */}
-              <div className="glass-chrome rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 flex flex-col glow-border relative border-primary/30 group">
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 bg-primary text-primary-foreground text-[10px] font-bold uppercase tracking-widest rounded-full">
-                  Most Popular
-                </div>
-                <div className="mb-6 md:mb-8">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">Professional</span>
-                  <div className="mt-4 flex items-baseline gap-1">
-                    <span className="text-4xl md:text-5xl font-black">$297</span>
-                    <span className="text-sm opacity-40">/activation</span>
-                  </div>
-                  <p className="mt-4 text-sm text-muted-foreground/70">For growing businesses ready to scale.</p>
-                </div>
-                <ul className="space-y-3 md:space-y-4 mb-8 md:mb-10 flex-1 text-sm">
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>3 AI Voice Agents</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>2,000 minutes/month</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>Advanced CRM sync</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>Call transcription</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>Priority support</span></li>
-                </ul>
-                <Link href="#book">
-                  <Button className="w-full h-14 rounded-2xl text-sm font-bold uppercase tracking-wider shadow-2xl">Deploy Now</Button>
-                </Link>
-              </div>
-
-              {/* Enterprise Tier */}
-              <div className="glass-chrome rounded-[2rem] md:rounded-[3rem] p-8 md:p-10 flex flex-col glow-border group">
-                <div className="mb-6 md:mb-8">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-muted-foreground/60">Enterprise</span>
-                  <div className="mt-4 flex items-baseline gap-1">
-                    <span className="text-3xl md:text-4xl font-black">$997</span>
-                    <span className="text-sm opacity-40">/activation</span>
-                  </div>
-                  <p className="mt-4 text-sm text-muted-foreground/70">Full-scale operations with custom needs.</p>
-                </div>
-                <ul className="space-y-3 md:space-y-4 mb-8 md:mb-10 flex-1 text-sm">
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>Unlimited AI Agents</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>Unlimited minutes</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>Custom integrations</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>Dedicated manager</span></li>
-                  <li className="flex items-center gap-3"><CheckCircle className="h-4 w-4 text-primary shrink-0" /><span>24/7 support</span></li>
-                </ul>
-                <Link href="#book">
-                  <Button variant="outline" className="w-full h-14 rounded-2xl text-sm font-bold uppercase tracking-wider">Contact Sales</Button>
-                </Link>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Missed Calls Calculator */}
+        <MissedCallsCalculator />
 
         {/* Booking Section */}
         <section id="book" className="py-24 md:py-48 bg-[#0a0a0a]">
