@@ -15,11 +15,13 @@ const tiers = [
     popular: true,
     features: [
       'AI receptionist setup',
-      'VAPI phone number',
+      'VAPI phone number hosted',
+      '500 minutes/month included',
       'We manage all updates',
       '24/7 monitoring',
       'Priority support',
       'Monthly call reports',
+      'Phone line maintenance',
     ],
     color: 'purple',
   },
@@ -28,16 +30,18 @@ const tiers = [
     name: 'Self-Service',
     icon: Settings,
     tagline: 'You manage, we host',
-    setupFee: 2500,
+    setupFee: 1500,
     monthly: 150,
     popular: false,
     features: [
       'AI receptionist setup',
-      'VAPI phone number',
+      'VAPI phone number hosted',
+      '200 minutes/month included',
       'Client portal access',
       'Edit greeting, FAQ, hours',
       '24/7 monitoring',
       'Monthly call reports',
+      'Phone line maintenance',
     ],
     color: 'blue',
   },
@@ -51,11 +55,13 @@ const tiers = [
     popular: false,
     features: [
       'Everything in Self-Service',
+      '1,000 minutes/month included',
       'Your branding on portal',
       'Resell to your clients',
       'Priority support',
       'Custom integrations',
       'Agency dashboard',
+      'Phone line maintenance',
     ],
     color: 'green',
   },
@@ -69,11 +75,12 @@ const tiers = [
     popular: false,
     features: [
       'AI receptionist setup',
-      'VAPI phone number',
+      'VAPI account transferred to you',
       'Full account ownership',
-      'No monthly fees',
+      'No monthly fees (pay VAPI direct)',
       'Support available ($150/hr)',
       'Complete control',
+      'One-time transfer of phone number',
     ],
     color: 'orange',
   },
@@ -167,22 +174,90 @@ export function PricingTiers() {
           })}
         </div>
 
-        {/* Compare CTA */}
-        <div className="mt-12 md:mt-16 text-center">
-          <p className="text-muted-foreground mb-4">
-            Want to see how we compare to GoHighLevel?
+        {/* Comparison Table */}
+        <div className="mt-16 md:mt-24">
+          <h3 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">
+            How We Stack Up
+          </h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm md:text-base">
+              <thead>
+                <tr className="border-b border-white/10">
+                  <th className="text-left py-4 px-2 md:px-4 font-bold">Feature</th>
+                  <th className="text-center py-4 px-2 md:px-4 font-bold text-primary">Apex Voice</th>
+                  <th className="text-center py-4 px-2 md:px-4 font-bold opacity-60">GoHighLevel</th>
+                  <th className="text-center py-4 px-2 md:px-4 font-bold opacity-60">Synthflow</th>
+                  <th className="text-center py-4 px-2 md:px-4 font-bold opacity-60">Retell</th>
+                </tr>
+              </thead>
+              <tbody className="text-muted-foreground">
+                <tr className="border-b border-white/5">
+                  <td className="py-3 px-2 md:px-4">Setup Fee</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-foreground font-bold">$1,500</td>
+                  <td className="py-3 px-2 md:px-4 text-center">$0</td>
+                  <td className="py-3 px-2 md:px-4 text-center">$0</td>
+                  <td className="py-3 px-2 md:px-4 text-center">$0</td>
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="py-3 px-2 md:px-4">Monthly Base</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-foreground font-bold">$150</td>
+                  <td className="py-3 px-2 md:px-4 text-center">$297-$497</td>
+                  <td className="py-3 px-2 md:px-4 text-center">$99-$499</td>
+                  <td className="py-3 px-2 md:px-4 text-center">$0 (usage only)</td>
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="py-3 px-2 md:px-4">Minutes Included</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-foreground font-bold">200-1,000</td>
+                  <td className="py-3 px-2 md:px-4 text-center">0 (pay extra)</td>
+                  <td className="py-3 px-2 md:px-4 text-center">50-500</td>
+                  <td className="py-3 px-2 md:px-4 text-center">0</td>
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="py-3 px-2 md:px-4">Phone Hosting</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-green-400">✓ Included</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-green-400">✓</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-green-400">✓</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-green-400">✓</td>
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="py-3 px-2 md:px-4">White-Label</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-green-400">✓ $250/mo</td>
+                  <td className="py-3 px-2 md:px-4 text-center">$497/mo</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-red-400">$580+/mo</td>
+                  <td className="py-3 px-2 md:px-4 text-center">Not available</td>
+                </tr>
+                <tr className="border-b border-white/5">
+                  <td className="py-3 px-2 md:px-4">Full Service Option</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-green-400">✓ We manage it</td>
+                  <td className="py-3 px-2 md:px-4 text-center">DIY only</td>
+                  <td className="py-3 px-2 md:px-4 text-center">DIY only</td>
+                  <td className="py-3 px-2 md:px-4 text-center">DIY only</td>
+                </tr>
+                <tr>
+                  <td className="py-3 px-2 md:px-4 font-bold">Annual Cost (White-Label)</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-foreground font-bold text-green-400">$6,500</td>
+                  <td className="py-3 px-2 md:px-4 text-center">$5,964+</td>
+                  <td className="py-3 px-2 md:px-4 text-center text-red-400">$7,500+</td>
+                  <td className="py-3 px-2 md:px-4 text-center">N/A</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* White-Label Callout */}
+        <div className="mt-12 p-6 md:p-8 bg-gradient-to-r from-green-500/10 to-emerald-500/10 rounded-2xl md:rounded-3xl text-center max-w-3xl mx-auto border border-green-500/20">
+          <p className="text-sm text-muted-foreground mb-2">Agency Owners</p>
+          <p className="text-xl md:text-2xl font-bold">
+            <span className="text-green-400">Save $21,000/year vs Synthflow</span> with our White-Label tier.
+            <span className="text-muted-foreground block mt-2 text-base font-normal">
+              Same features, your branding, fraction of the cost.
+            </span>
           </p>
-          <Link 
-            href="https://crm.apexvoicesolutions.org/compare"
-            target="_blank"
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-bold text-sm uppercase tracking-wider transition-colors"
-          >
-            View Full Comparison <ArrowRight className="h-4 w-4" />
-          </Link>
         </div>
 
         {/* Annual Savings */}
-        <div className="mt-12 p-6 md:p-8 bg-green-500/10 rounded-2xl md:rounded-3xl text-center max-w-2xl mx-auto">
+        <div className="mt-8 p-6 md:p-8 bg-green-500/10 rounded-2xl md:rounded-3xl text-center max-w-2xl mx-auto">
           <p className="text-sm text-muted-foreground mb-2">Why our pricing works</p>
           <p className="text-lg md:text-xl font-bold">
             <span className="text-green-400">Save $10,000+ per year</span> compared to GoHighLevel subscriptions.

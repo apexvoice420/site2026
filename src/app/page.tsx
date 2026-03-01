@@ -109,6 +109,13 @@ export default function Home() {
               </div>
             </div>
 
+            {/* Loss Hook */}
+            <div className="inline-block mb-6 md:mb-8 px-4 py-2 md:px-6 md:py-3 bg-red-500/10 border border-red-500/20 rounded-full">
+              <span className="text-red-400 text-sm md:text-base font-bold">
+                The average roofer loses $39,000/year to missed calls.
+              </span>
+            </div>
+
             {/* Headline - Responsive sizing */}
             <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-[140px] font-black tracking-tight md:tracking-[-0.04em] leading-[0.9] md:leading-[0.85] mb-8 md:mb-12">
               ELIMINATE THE <br className="hidden sm:block" />
@@ -116,8 +123,13 @@ export default function Home() {
             </h1>
 
             {/* Subtitle */}
-            <p className="max-w-[90%] md:max-w-[800px] mx-auto text-base md:text-2xl text-muted-foreground/80 font-medium leading-relaxed mb-10 md:mb-16">
+            <p className="max-w-[90%] md:max-w-[800px] mx-auto text-base md:text-2xl text-muted-foreground/80 font-medium leading-relaxed mb-6 md:mb-10">
               Advanced voice-native intelligence that captures, qualifies, and synchronizes every opportunity while you sleep.
+            </p>
+
+            {/* Pricing Hook */}
+            <p className="text-primary text-lg md:text-xl font-bold mb-10 md:mb-16">
+              Starting at $150/month
             </p>
 
             {/* CTA Buttons - Touch-friendly */}
