@@ -83,6 +83,24 @@
   h4 {
     @apply tracking-tighter;
   }
+
+  /* Fix INP: Optimize hover transitions */
+  a {
+    transition: color 0.15s ease;
+    will-change: color;
+  }
+
+  a:hover {
+    transition-duration: 0ms;
+  }
+
+  /* Reduce paint on hover states */
+  .hover\:text-foreground:hover,
+  .hover\:text-primary:hover,
+  .hover\:bg-white\/5:hover,
+  .hover\:bg-white\/10:hover {
+    transition: none;
+  }
 }
 
 /* Redesign V4 Custom Utilities */

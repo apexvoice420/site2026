@@ -29,7 +29,7 @@ export default function Home() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20 transition-colors duration-1000 font-sans">
+    <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20 font-sans">
       {/* Mobile-First Navigation */}
       <header className="sticky top-0 z-50 w-full border-b border-white/5 bg-background/80 backdrop-blur-xl">
         <div className="container mx-auto flex h-16 md:h-20 items-center justify-between px-4 md:px-12">
@@ -44,10 +44,10 @@ export default function Home() {
           
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-10 text-[13px] font-bold uppercase tracking-[0.2em] text-muted-foreground/60">
-            <Link href="#features" className="hover:text-foreground transition-colors">Intelligence</Link>
-            <Link href="#solutions" className="hover:text-foreground transition-colors">Solutions</Link>
-            <Link href="#demo" className="hover:text-foreground transition-colors">Live Feed</Link>
-            <Link href="#pricing" className="hover:text-foreground transition-colors">Access</Link>
+            <Link href="#features" className="hover:text-foreground">Intelligence</Link>
+            <Link href="#solutions" className="hover:text-foreground">Solutions</Link>
+            <Link href="#demo" className="hover:text-foreground">Live Feed</Link>
+            <Link href="#pricing" className="hover:text-foreground">Access</Link>
           </nav>
           
           <div className="flex items-center gap-3 md:gap-4">
